@@ -4,44 +4,38 @@ import Form from 'react-bootstrap/Form';
 
 class AddEditForm extends React.Component {
   state = {
-    id: 0
   }
 
   onChange = e => {
-    this.setState({[e.target.name]: e.target.value})
+    this.setState({[e.target.name]: e.target.value});
   }
 
   submitFormAdd = e => {
-    e.preventDefault()
-    fetch('http://localhost:3000/crud', {
-      method: 'post',
+    e.preventDefault();
+    console.log(this.props.url);
+
+    fetch(this.props.url, {
+      method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+          Accept: 'application/json'
       },
-      body: JSON.stringify({
-        first: this.state.first,
-        last: this.state.last,
-        email: this.state.email,
-        phone: this.state.phone,
-        location: this.state.location,
-        hobby: this.state.hobby
-      })
+      body: JSON.stringify(this.state)
     })
-      .then(response => response.json())
+      .then(response => {
+        return response.statusText === 'Created' ? response.json() : null
+      })
       .then(item => {
-        if(Array.isArray(item)) {
-          this.props.addItemToState(item[0])
-          this.props.toggle()
-        } else {
-          console.log('failure')
-        }
+          this.props.addItemToState(item);
+          this.props.toggle();
       })
       .catch(err => console.log(err))
   }
 
   submitFormEdit = e => {
     e.preventDefault()
-    fetch('http://localhost:3000/crud', {
+    console.log(this.state);
+    /*fetch('http://localhost:3000/crud', {
       method: 'put',
       headers: {
         'Content-Type': 'application/json'
@@ -66,15 +60,7 @@ class AddEditForm extends React.Component {
           console.log('failure')
         }
       })
-      .catch(err => console.log(err))
-  }
-
-  componentDidMount(){
-    // if item exists, populate the state with proper data
-    if(this.props.item){
-      const { id, first, last, email, phone, location, hobby } = this.props.item
-      this.setState({ id, first, last, email, phone, location, hobby })
-    }
+      .catch(err => console.log(err))*/
   }
 
   render() {
@@ -83,15 +69,16 @@ class AddEditForm extends React.Component {
 
           {this.props.fields.map(field => {
             return(
-              <Form.Group>
-                <Form.Control type={field.type} placeholder={field.name} />
+              <Form.Group key={field.field}>
+                <Form.Label><h5>{field.name}</h5></Form.Label>
+                <Form.Control name={field.field} type={field.type} onChange={this.onChange} placeholder={field.name} />
               </Form.Group>
             )
           })}
         <div>
           <Button variant="dark" onClick={this.props.toggle}>Annulla</Button>
           {' '}
-          <Button>Aggiungi</Button>
+          <Button type="submit">Aggiungi</Button>
         </div>
       </Form>
     );

@@ -71,6 +71,7 @@ class BarrelSetView extends React.Component {
         <Row>
           <Col>
             <ModalForm buttonLabel="Nuova Batteria"
+                        url={'http://localhost:8000/api/barrel_sets/'}
                         fields={[
                                   {
                                     field: 'id',

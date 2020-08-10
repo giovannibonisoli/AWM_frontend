@@ -5,11 +5,8 @@ import Button  from 'react-bootstrap/Button';
 import AddEditForm from './AddEditForm';
 
 class ModalForm extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      modal: false
-    }
+  state = {
+    modal: false
   }
 
   toggle = () => {
@@ -45,9 +42,9 @@ class ModalForm extends Component {
       <div>
         {button}
         <Modal show={this.state.modal} onHide={this.toggle} className={this.props.className}>
-          <Modal.Header>{title}</Modal.Header>
+          <Modal.Header><h3>{title}</h3></Modal.Header>
           <Modal.Body>
-            <AddEditForm
+            <AddEditForm url={this.props.url}
               addItemToState={this.props.addItemToState}
               updateState={this.props.updateState}
               toggle={this.toggle}

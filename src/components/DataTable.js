@@ -10,7 +10,7 @@ class DataTable extends Component {
   deleteItem = id => {
     let confirmDelete = window.confirm('Delete item forever?')
     if(confirmDelete){
-      fetch(`${this.props.url}/${id}/`, {
+      fetch(`${this.props.url}${id}/`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -36,7 +36,7 @@ class DataTable extends Component {
       <Table responsive bordered hover>
         <thead>
           <tr>
-            {this.props.fields.map(field => <th>{field.name}</th>)}
+            {this.props.fields.map(field => <th key={field.field}>{field.name}</th>)}
             <th></th>
           </tr>
         </thead>
@@ -44,10 +44,11 @@ class DataTable extends Component {
           {this.props.items.map(item => {
             return (
               <tr key={item.id}>
-                {this.props.fields.map(field => <td>{item[field.field]}</td>)}
+                {this.props.fields.map(field => <td key={field.field}>{item[field.field]}</td>)}
                 <td>
                   <div>
-                    <ModalForm buttonLabel="Modifica"
+                    <ModalForm url={this.props.url}
+                                buttonLabel="Modifica"
                                 item={item}
                                 updateState={this.props.updateState}
                                 fields={this.props.fields} />

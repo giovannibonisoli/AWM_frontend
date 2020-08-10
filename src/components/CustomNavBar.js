@@ -12,7 +12,7 @@ class CustomNavBar extends React.Component {
         <Navbar.Brand as={Link} to="/">Acetaia</Navbar.Brand>
         <Nav className="mr-auto">
           <Nav.Link as={Link} to="/barrel_sets">Barili</Nav.Link>
-          <Nav.Link as={Link} to="/operations">Operazioni</Nav.Link>
+          <Nav.Link as={Link} to="/operation_type">Operazioni</Nav.Link>
         </Nav>
         <Nav>
           <Nav.Link as={Link} to="/logout">Logout</Nav.Link>

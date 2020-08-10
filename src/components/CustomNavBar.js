@@ -11,7 +11,7 @@ class CustomNavBar extends React.Component {
       <Navbar bg="dark" variant="dark">
         <Navbar.Brand as={Link} to="/">Acetaia</Navbar.Brand>
         <Nav className="mr-auto">
-          <Nav.Link as={Link} to="/barrel_sets">Barili</Nav.Link>
+          <Nav.Link as={Link} to="/barrel_sets">Batterie e Barili</Nav.Link>
           <Nav.Link as={Link} to="/operation_type">Operazioni</Nav.Link>
         </Nav>
         <Nav>

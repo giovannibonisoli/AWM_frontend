@@ -62,16 +62,20 @@ class BarrelSetView extends React.Component {
                                     type: 'number'
                                   }
                                 ]}
+                        title = "batteria"
+                        detailed={["/barrels", "Visualizza Barili"]}
                         items={this.state.items}
                         updateState={this.updateState}
                         deleteItemFromState={this.deleteItemFromState}
-                        detailLink="/barrels" />
+                         />
           </Col>
         </Row>
         <Row>
           <Col>
             <ModalForm buttonLabel="Nuova Batteria"
-                        url={'http://localhost:8000/api/barrel_sets/'}
+                        title = "batteria"
+                        url='http://localhost:8000/api/barrel_sets/'
+                        addItemToState={this.addItemToState}
                         fields={[
                                   {
                                     field: 'id',
@@ -83,8 +87,7 @@ class BarrelSetView extends React.Component {
                                     name: 'Anno',
                                     type: 'number'
                                   }
-                                ]}
-                        addItemToState={this.addItemToState}/>
+                                ]} />
           </Col>
         </Row>
       </div>

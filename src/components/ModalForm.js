@@ -27,14 +27,14 @@ class ModalForm extends Component {
                   onClick={this.toggle}
                   style={{float: "left", marginRight:"10px"}}>{label}
                 </Button>
-        title = 'Modifica dati batteria'
+        title = `Modifica dati ${this.props.title}`
       } else {
         button = <Button
                   color="success"
                   onClick={this.toggle}
                   style={{float: "left", marginRight:"10px"}}>{label}
                 </Button>
-        title = 'Aggiungi nuova batteria'
+        title = `Aggiungi dati ${this.props.title}`
       }
 
 
@@ -49,7 +49,6 @@ class ModalForm extends Component {
               updateState={this.props.updateState}
               toggle={this.toggle}
               item={this.props.item}
-              closeAction={this.toggle}
               fields={this.props.fields}/>
 
           </Modal.Body>

@@ -12,7 +12,6 @@ class AddEditForm extends React.Component {
 
   submitFormAdd = e => {
     e.preventDefault();
-    console.log(this.props.url);
 
     fetch(this.props.url, {
       method: 'POST',
@@ -23,6 +22,7 @@ class AddEditForm extends React.Component {
       body: JSON.stringify(this.state)
     })
       .then(response => {
+        console.log(response);
         return response.statusText === 'Created' ? response.json() : null
       })
       .then(item => {
@@ -34,9 +34,9 @@ class AddEditForm extends React.Component {
 
   submitFormEdit = e => {
     e.preventDefault()
-    console.log(this.state);
+
     /*fetch('http://localhost:3000/crud', {
-      method: 'put',
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
       },
@@ -63,6 +63,14 @@ class AddEditForm extends React.Component {
       .catch(err => console.log(err))*/
   }
 
+  componentDidMount(){
+    if(this.props.item){
+      this.props.fields.map(field => {
+        return this.setState({[field.field]: this.props.item[field.field]});
+      });
+    }
+  }
+
   render() {
     return (
       <Form onSubmit={this.props.item ? this.submitFormEdit : this.submitFormAdd}>
@@ -71,7 +79,11 @@ class AddEditForm extends React.Component {
             return(
               <Form.Group key={field.field}>
                 <Form.Label><h5>{field.name}</h5></Form.Label>
-                <Form.Control name={field.field} type={field.type} onChange={this.onChange} placeholder={field.name} />
+                <Form.Control name={field.field}
+                              value={this.state[field.field]}
+                              type={field.type}
+                              onChange={this.onChange}
+                              placeholder={field.name} />
               </Form.Group>
             )
           })}

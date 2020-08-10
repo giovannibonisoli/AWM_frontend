@@ -27,9 +27,9 @@ class DataTable extends Component {
 
   render() {
     let detailButton;
-    if (this.props.detailLink){
-      detailButton = (<Link to={this.props.detailLink} style={{margin: "0 10px"}}>
-                        <Button variant="info">Visualizza i barili</Button>
+    if (this.props.detailed){
+      detailButton = (<Link to={this.props.detailed[0]} style={{margin: "0 10px"}}>
+                        <Button variant="info">{this.props.detailed[1]}</Button>
                       </Link>);
     }
     return (
@@ -47,8 +47,9 @@ class DataTable extends Component {
                 {this.props.fields.map(field => <td key={field.field}>{item[field.field]}</td>)}
                 <td>
                   <div>
-                    <ModalForm url={this.props.url}
-                                buttonLabel="Modifica"
+                    <ModalForm buttonLabel="Modifica"
+                                title = {this.props.title}
+                                url={this.props.url}
                                 item={item}
                                 updateState={this.props.updateState}
                                 fields={this.props.fields} />

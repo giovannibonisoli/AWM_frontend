@@ -10,28 +10,11 @@ class DataTable extends Component {
   deleteItem = id => {
     let confirmDelete = window.confirm('Delete item forever?')
     if(confirmDelete){
-      fetch(`${this.props.url}${id}/`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-  		      Accept: 'application/json'
-	      }
-      })
-      .then(response => response.statusText === 'No Content' ? null : response.json())
-      .then(item => {
-        this.props.deleteItemFromState(id);
-      })
-      .catch(err => console.log(err))
+      this.props.deleteItemFromState(id);
     }
   }
 
   render() {
-    let detailButton;
-    if (this.props.detailed){
-      detailButton = (<Link to={this.props.detailed[0]} style={{margin: "0 10px"}}>
-                        <Button variant="info">{this.props.detailed[1]}</Button>
-                      </Link>);
-    }
     return (
       <Table responsive bordered hover>
         <thead>
@@ -55,7 +38,15 @@ class DataTable extends Component {
                                 fields={this.props.fields} />
                     <Button variant="danger"
                             onClick={() => this.deleteItem(item.id)}>Elimina</Button>
-                    {detailButton}
+                    {
+                      this.props.detailed ?
+                      <Link to={`${this.props.detailed[0]}/${item.id}`}
+                            style={{margin: "0 10px"}}>
+                            <Button variant="info">{this.props.detailed[1]}</Button>
+                      </Link>
+                      :
+                      <div></div>
+                    }
                   </div>
                 </td>
               </tr>

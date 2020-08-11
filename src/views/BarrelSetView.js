@@ -9,31 +9,71 @@ class BarrelSetView extends React.Component {
   }
 
   addItemToState = (item) => {
-    this.setState(prevState => ({
-      items: [...prevState.items, item]
-    }))
+
+    fetch('http://localhost:8000/api/barrel_set/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json'
+      },
+      body: JSON.stringify(item)
+    })
+      .then(response => {
+        return response.statusText === 'Created' ? response.json() : null
+      })
+      .then(item => {
+        this.setState(prevState => ({
+          items: [...prevState.items, item]
+        }))
+      })
+      .catch(err => console.log(err));
   }
 
-  updateState = (item) => {
-    const itemIndex = this.state.items.findIndex(data => data.id === item.id)
-    const newArray = [
-    // destructure all items from beginning to the indexed item
-      ...this.state.items.slice(0, itemIndex),
-    // add the updated item to the array
-      item,
-    // add the rest of the items to the array from the index after the replaced item
-      ...this.state.items.slice(itemIndex + 1)
-    ]
-    this.setState({ items: newArray })
+  updateState = (newitem) => {
+
+    fetch(`http://localhost:8000/api/barrel_set/${newitem.id}/`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json'
+      },
+      body: JSON.stringify(newitem)
+    })
+      .then(response => response.json())
+      .then(item => {
+        const itemIndex = this.state.items.findIndex(data => data.id === item.id);
+        const newArray = [
+        // destructure all items from beginning to the indexed item
+          ...this.state.items.slice(0, itemIndex),
+        // add the updated item to the array
+          item,
+        // add the rest of the items to the array from the index after the replaced item
+          ...this.state.items.slice(itemIndex + 1)
+        ]
+        this.setState({ items: newArray });
+
+      })
+      .catch(err => console.log(err));
   }
 
   deleteItemFromState = (id) => {
-    const updatedItems = this.state.items.filter(item => item.id !== id)
-    this.setState({ items: updatedItems })
+    fetch(`http://localhost:8000/api/barrel_set/${id}/`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+          Accept: 'application/json'
+      }
+    })
+    .then(response => response.statusText === 'No Content' ? null : response.json())
+    .then(item => {
+      const updatedItems = this.state.items.filter(item => item.id !== id);
+      this.setState({ items: updatedItems });
+    })
+    .catch(err => console.log(err));
   }
 
   componentDidMount(){
-    fetch('http://localhost:8000/api/barrel_sets/')
+    fetch('http://localhost:8000/api/barrel_set/')
       .then(response => response.json())
       .then(items => this.setState({items}))
       .catch(err => console.log(err))
@@ -49,7 +89,10 @@ class BarrelSetView extends React.Component {
         </Row>
         <Row>
           <Col>
-            <DataTable url={'http://localhost:8000/api/barrel_sets/'}
+            <DataTable url={'http://localhost:8000/api/barrel_set/'}
+                        title = "batteria"
+                        detailed={["/barrel_set", "Visualizza Barili"]}
+                        items={this.state.items}
                         fields={[
                                   {
                                     field: 'id',
@@ -62,9 +105,7 @@ class BarrelSetView extends React.Component {
                                     type: 'number'
                                   }
                                 ]}
-                        title = "batteria"
-                        detailed={["/barrels", "Visualizza Barili"]}
-                        items={this.state.items}
+
                         updateState={this.updateState}
                         deleteItemFromState={this.deleteItemFromState}
                          />
@@ -74,8 +115,7 @@ class BarrelSetView extends React.Component {
           <Col>
             <ModalForm buttonLabel="Nuova Batteria"
                         title = "batteria"
-                        url='http://localhost:8000/api/barrel_sets/'
-                        addItemToState={this.addItemToState}
+                        url='http://localhost:8000/api/barrel_set/'
                         fields={[
                                   {
                                     field: 'id',
@@ -87,7 +127,8 @@ class BarrelSetView extends React.Component {
                                     name: 'Anno',
                                     type: 'number'
                                   }
-                                ]} />
+                                ]}
+                        addItemToState={this.addItemToState}/>
           </Col>
         </Row>
       </div>

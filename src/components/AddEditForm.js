@@ -12,53 +12,30 @@ class AddEditForm extends React.Component {
 
   submitFormAdd = e => {
     e.preventDefault();
+    this.props.addItemToState(this.state);
+    this.props.toggle();
 
-    fetch(this.props.url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-          Accept: 'application/json'
-      },
-      body: JSON.stringify(this.state)
-    })
-      .then(response => {
-        console.log(response);
-        return response.statusText === 'Created' ? response.json() : null
-      })
-      .then(item => {
-          this.props.addItemToState(item);
-          this.props.toggle();
-      })
-      .catch(err => console.log(err))
   }
 
   submitFormEdit = e => {
     e.preventDefault()
+    this.props.updateState(this.state);
+    this.props.toggle();
+    
 
-    /*fetch('http://localhost:3000/crud', {
+    /*fetch(`${this.props.url}${this.props.item.id}/`, {
       method: 'PUT',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Accept: 'application/json'
       },
-      body: JSON.stringify({
-        id: this.state.id,
-        first: this.state.first,
-        last: this.state.last,
-        email: this.state.email,
-        phone: this.state.phone,
-        location: this.state.location,
-        hobby: this.state.hobby
-      })
+      body: JSON.stringify(this.state)
     })
       .then(response => response.json())
       .then(item => {
-        if(Array.isArray(item)) {
-          // console.log(item[0])
-          this.props.updateState(item[0])
-          this.props.toggle()
-        } else {
-          console.log('failure')
-        }
+        this.props.updateState(item);
+        this.props.toggle();
+
       })
       .catch(err => console.log(err))*/
   }

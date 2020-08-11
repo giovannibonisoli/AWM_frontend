@@ -8,7 +8,7 @@ class BarrelSetView extends React.Component {
     items: []
   }
 
-  addItemToState = (item) => {
+  addItemToState = (newitem) => {
 
     fetch('http://localhost:8000/api/barrel_set/', {
       method: 'POST',
@@ -16,7 +16,7 @@ class BarrelSetView extends React.Component {
         'Content-Type': 'application/json',
         Accept: 'application/json'
       },
-      body: JSON.stringify(item)
+      body: JSON.stringify(newitem)
     })
       .then(response => {
         return response.statusText === 'Created' ? response.json() : null
@@ -29,15 +29,15 @@ class BarrelSetView extends React.Component {
       .catch(err => console.log(err));
   }
 
-  updateState = (newitem) => {
+  updateState = (updateditem) => {
 
-    fetch(`http://localhost:8000/api/barrel_set/${newitem.id}/`, {
+    fetch(`http://localhost:8000/api/barrel_set/${updateditem.id}/`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json'
       },
-      body: JSON.stringify(newitem)
+      body: JSON.stringify(updateditem)
     })
       .then(response => response.json())
       .then(item => {

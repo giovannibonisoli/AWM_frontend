@@ -32,7 +32,6 @@ class DataTable extends Component {
                   <div>
                     <ModalForm buttonLabel="Modifica"
                                 title = {this.props.title}
-                                url={this.props.url}
                                 item={item}
                                 updateState={this.props.updateState}
                                 fields={this.props.fields} />

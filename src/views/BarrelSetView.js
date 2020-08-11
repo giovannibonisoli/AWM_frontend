@@ -89,8 +89,7 @@ class BarrelSetView extends React.Component {
         </Row>
         <Row>
           <Col>
-            <DataTable url={'http://localhost:8000/api/barrel_set/'}
-                        title = "batteria"
+            <DataTable title = "batteria"
                         detailed={["/barrel_set", "Visualizza Barili"]}
                         items={this.state.items}
                         fields={[
@@ -115,7 +114,6 @@ class BarrelSetView extends React.Component {
           <Col>
             <ModalForm buttonLabel="Nuova Batteria"
                         title = "batteria"
-                        url='http://localhost:8000/api/barrel_set/'
                         fields={[
                                   {
                                     field: 'id',

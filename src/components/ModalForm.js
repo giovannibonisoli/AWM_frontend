@@ -44,8 +44,7 @@ class ModalForm extends Component {
         <Modal show={this.state.modal} onHide={this.toggle} className={this.props.className}>
           <Modal.Header><h3>{title}</h3></Modal.Header>
           <Modal.Body>
-            <AddEditForm url={this.props.url}
-              addItemToState={this.props.addItemToState}
+            <AddEditForm addItemToState={this.props.addItemToState}
               updateState={this.props.updateState}
               toggle={this.toggle}
               item={this.props.item}

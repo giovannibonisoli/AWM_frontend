@@ -35,7 +35,6 @@ class AddEditForm extends React.Component {
       <Form onSubmit={this.props.item ? this.submitFormEdit : this.submitFormAdd}>
 
           {this.props.fields.map(field => {
-            if(field.formvisible){
               return(
                 <Form.Group key={field.field}>
                   <Form.Label><h5>{field.name}</h5></Form.Label>
@@ -49,8 +48,6 @@ class AddEditForm extends React.Component {
                                 required/>
                 </Form.Group>
               )
-            }
-            return null;
           })}
         <div>
           <Button variant="dark" onClick={this.props.toggle}>Annulla</Button>

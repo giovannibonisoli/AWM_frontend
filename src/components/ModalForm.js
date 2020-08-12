@@ -19,22 +19,22 @@ class ModalForm extends React.Component {
     let button = ''
     let title = ''
 
-    if(this.props.buttonLabel === 'Modifica'){
+    if(this.props.type === 'update'){
       button = <Button
                   variant="primary"
                   onClick={this.toggle}
                   style={{float: "left", marginRight:"10px"}}>
-                    {this.props.buttonLabel}
+                    Modifica
                 </Button>
-      title = `Modifica dati ${this.props.title}`
+      title = `Modifica ${this.props.objectName}`
     } else {
       button = <Button
                   variant="success"
                   onClick={this.toggle}
                   style={{float: "left", marginRight:"10px"}}>
-                    {this.props.buttonLabel}
+                    {`Aggiungi ${this.props.objectName}`}
                </Button>
-      title = `Inserisci dati ${this.props.title}`
+      title = `Nuova ${this.props.objectName}`
     }
 
     return (
@@ -46,6 +46,7 @@ class ModalForm extends React.Component {
           </Modal.Header>
           <Modal.Body>
             <AddEditForm addItemToState={this.props.addItemToState}
+              type={this.props.type}
               updateState={this.props.updateState}
               toggle={this.toggle}
               item={this.props.item}

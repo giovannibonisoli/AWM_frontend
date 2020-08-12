@@ -8,7 +8,7 @@ class BarrelSetView extends React.Component {
     items: []
   }
 
-  addItemToState = (newitem) => {
+  addItemToState = (newItem) => {
 
     fetch('http://localhost:8000/api/barrel_set/', {
       method: 'POST',
@@ -16,7 +16,7 @@ class BarrelSetView extends React.Component {
         'Content-Type': 'application/json',
         Accept: 'application/json'
       },
-      body: JSON.stringify(newitem)
+      body: JSON.stringify(newItem)
     })
       .then(response => {
         return response.statusText === 'Created' ? response.json() : null
@@ -96,12 +96,15 @@ class BarrelSetView extends React.Component {
                                   {
                                     field: 'id',
                                     name: 'Numero di Batteria',
-                                    type: 'number'
+                                    type: 'number',
+                                    formvisible: false
                                   },
                                   {
                                     field: 'year',
                                     name: 'Anno',
-                                    type: 'number'
+                                    type: 'number',
+                                    min: 1984,
+                                    formvisible: true
                                   }
                                 ]}
 
@@ -118,12 +121,16 @@ class BarrelSetView extends React.Component {
                                   {
                                     field: 'id',
                                     name: 'Numero di Batteria',
-                                    type: 'number'
+                                    type: 'number',
+                                    min: 0,
+                                    formvisible: true
                                   },
                                   {
                                     field: 'year',
                                     name: 'Anno',
-                                    type: 'number'
+                                    type: 'number',
+                                    min: 1984,
+                                    formvisible: true
                                   }
                                 ]}
                         addItemToState={this.addItemToState}/>

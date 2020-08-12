@@ -8,15 +8,17 @@ class BarrelView extends React.Component {
     items: []
   }
 
-  addItemToState = (newitem) => {
-    newitem.barrel_set = this.props.match.params.setID;
+  addItemToState = (newItem) => {
+    let barNum = `${this.state.items.length + 1}`.toString().padStart(2, '0');
+    newItem.barrel_set = this.props.match.params.setID;
+    newItem.id = `BAR${newItem.barrel_set.toString().padStart(2, '0')}${barNum.toString().padStart(2, '0')}`;
     fetch('http://localhost:8000/api/barrel/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json'
       },
-      body: JSON.stringify(newitem)
+      body: JSON.stringify(newItem)
     })
       .then(response => {
         return response.statusText === 'Created' ? response.json() : null
@@ -30,7 +32,7 @@ class BarrelView extends React.Component {
   }
 
   updateState = (updateditem) => {
-
+    updateditem.barrel_set = this.props.match.params.setID;
     fetch(`http://localhost:8000/api/barrel/${updateditem.id}/`, {
       method: 'PUT',
       headers: {
@@ -73,7 +75,7 @@ class BarrelView extends React.Component {
   }
 
   componentDidMount(){
-    fetch('http://localhost:8000/api/barrel/')
+    fetch(`http://localhost:8000/api/barrel/set/${this.props.match.params.setID}/`)
       .then(response => response.json())
       .then(items => this.setState({items}))
       .catch(err => console.log(err))
@@ -95,17 +97,21 @@ class BarrelView extends React.Component {
                                 {
                                   field: 'id',
                                   name: 'Codice Barile',
-                                  type: ''
+                                  type: '',
+                                  formvisible: false
                                 },
                                 {
                                   field: 'wood_type',
                                   name: 'Legno',
-                                  type: ''
+                                  type: '',
+                                  formvisible: true
                                 },
                                 {
                                   field: 'capability',
                                   name: 'Capacità',
-                                  type: 'number'
+                                  type: 'number',
+                                  min: 0,
+                                  formvisible: true
                                 }
                               ]}
                       updateState={this.updateState}
@@ -122,17 +128,21 @@ class BarrelView extends React.Component {
                                 {
                                   field: 'id',
                                   name: 'Codice Barile',
-                                  type: ''
+                                  type: '',
+                                  formvisible: false
                                 },
                                 {
                                   field: 'wood_type',
                                   name: 'Legno',
-                                  type: ''
+                                  type: '',
+                                  formvisible: true
                                 },
                                 {
                                   field: 'capability',
                                   name: 'Capacità',
-                                  type: 'number'
+                                  type: 'number',
+                                  min: 0,
+                                  formvisible: true
                                 }
                               ]} />
         </Col>

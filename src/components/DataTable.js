@@ -4,6 +4,7 @@ import Button  from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
 
 import ModalForm from './ModalForm';
+import EliminationModal from './EliminationModal';
 
 class DataTable extends Component {
 
@@ -35,12 +36,12 @@ class DataTable extends Component {
                                 item={item}
                                 updateState={this.props.updateState}
                                 fields={this.props.fields} />
-                    <Button variant="danger"
-                            onClick={() => this.deleteItem(item.id)}>Elimina</Button>
+                    <EliminationModal title = {this.props.title}
+                                        item={item}
+                                        deleteItemFromState={this.props.deleteItemFromState}/>
                     {
                       this.props.detailed ?
-                      <Link to={`${this.props.detailed[0]}/${item.id}`}
-                            style={{margin: "0 10px"}}>
+                      <Link to={`${this.props.detailed[0]}/${item.id}`}>
                             <Button variant="info">{this.props.detailed[1]}</Button>
                       </Link>
                       :

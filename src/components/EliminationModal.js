@@ -15,7 +15,7 @@ class EliminationForm extends React.Component {
   }
 
   deleteItem = () => {
-    this.props.deleteItemFromState(this.props.item.id);
+    this.props.deleteAction(this.props.item.id);
     this.toggle();
   }
 
@@ -27,7 +27,11 @@ class EliminationForm extends React.Component {
                 style={{float: "left", marginRight:"10px"}}>Elimina
         </Button>
         <Modal show={this.state.modal} onHide={this.toggle}>
-          <Modal.Header><Modal.Title>{`Elimina ${this.props.title}`}</Modal.Title></Modal.Header>
+          <Modal.Header>
+            <Modal.Title>
+              {`Elimina ${this.props.objectName}`}
+            </Modal.Title>
+          </Modal.Header>
           <Modal.Body>
             Sicuro di voler procedere?
           </Modal.Body>

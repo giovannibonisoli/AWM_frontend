@@ -2,23 +2,16 @@ import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
-class AddEditForm extends React.Component {
-  state = {
-  }
+class EditForm extends React.Component {
+  state = {}
 
   onChange = e => {
     this.setState({[e.target.name]: e.target.value});
   }
 
-  submitFormAdd = e => {
+  submitForm = e => {
     e.preventDefault();
-    this.props.addItemToState(this.state);
-    this.props.toggle();
-  }
-
-  submitFormEdit = e => {
-    e.preventDefault()
-    this.props.updateState(this.state);
+    this.props.action(this.state);
     this.props.toggle();
   }
 
@@ -32,8 +25,7 @@ class AddEditForm extends React.Component {
 
   render() {
     return (
-      <Form onSubmit={this.props.item ? this.submitFormEdit : this.submitFormAdd}>
-
+      <Form onSubmit={this.submitForm}>
           {this.props.fields.map(field => {
               return(
                 <Form.Group key={field.field}>
@@ -59,4 +51,4 @@ class AddEditForm extends React.Component {
   }
 }
 
-export default AddEditForm;
+export default EditForm;

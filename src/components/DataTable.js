@@ -31,14 +31,15 @@ class DataTable extends Component {
                                   action = {(updatedFields) => {
                                               let newItem = Object.assign({}, item);
                                               Object.keys(updatedFields).forEach(key => {
-                                                  newItem[key] = updatedFields[key]
+                                                  newItem[key] = updatedFields[key];
                                               });
 
                                               this.props.updateAction(newItem);
                                             }}
                                   fields = {this.props.fields.filter(el => {
                                     return el.modifiable === true;
-                                  })} />
+                                  })}
+                                  variable={this.props.variable}/>
                       <EliminationModal objectName = {this.props.objectName}
                                         item = {item}
                                         deleteAction = {this.props.deleteAction}/>
@@ -60,7 +61,8 @@ class DataTable extends Component {
         <ModalForm title = {`Aggiungi ${this.props.objectName}`}
                     buttonInfo = {[`Aggiungi ${this.props.objectName}`, "success"]}
                     action = {this.props.addAction}
-                    fields = {this.props.fields} />
+                    fields = {this.props.fields}
+                    variable={this.props.variable} />
       </div>
     )
   }

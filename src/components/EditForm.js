@@ -41,8 +41,8 @@ class EditForm extends React.Component {
                 </Form.Group>
               )
           })}
-        <div>
-          <Button variant="dark" onClick={this.props.toggle}>Annulla</Button>
+        <div class="float-xl-right">
+          <Button variant="secondary" onClick={this.props.toggle}>Annulla</Button>
           {' '}
           <Button type="submit">Ok</Button>
         </div>

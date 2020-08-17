@@ -5,11 +5,16 @@ import Col from 'react-bootstrap/Col';
 
 class VariableEditForm extends React.Component {
   state = {
+    description: "",
     schema: [{ field:"", name: "", type: "" }]
   }
 
   handleNameChange = e => {
     this.setState({ name: e.target.value });
+  };
+
+  handleDescriptionChange = e => {
+    this.setState({ description: e.target.value });
   };
 
   handleShareholderNameChange = idx => e => {
@@ -33,7 +38,8 @@ class VariableEditForm extends React.Component {
   handleSubmit = e => {
     e.preventDefault();
     this.props.action({
-      id: this.state.name,
+      name: this.state.name,
+      description: this.state.description,
       schema: JSON.stringify(this.state.schema)
     });
     this.props.toggle();
@@ -54,9 +60,10 @@ class VariableEditForm extends React.Component {
   componentDidMount(){
     if(this.props.item){
       this.setState({
-                      name: this.props.item.id,
-                      schema: JSON.parse(this.props.item.schema)
-                    });
+        name: this.props.item.name,
+        description: this.props.item.description,
+        schema: JSON.parse(this.props.item.schema)
+      });
       console.log(this.state);
     }
   }
@@ -64,21 +71,28 @@ class VariableEditForm extends React.Component {
   render() {
     return (
       <Form onSubmit={this.handleSubmit}>
+        <Form.Group>
+          {
+            !this.props.item ? (
+              <Form.Group>
+                <Form.Label><h5>Nome Operazione</h5></Form.Label>
+                <Form.Control type="text"
+                              placeholder="Operation name"
+                              value={this.state.name}
+                              onChange={this.handleNameChange}
+                              required />
+                <br/>
 
-        {
-          !this.props.item ? (
-            <Form.Group>
-              <Form.Label><h5>Nome Operazione</h5></Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Operation name"
-                    value={this.state.name}
-                    onChange={this.handleNameChange}
-                    required />
-            </Form.Group>
-          ) : (<div></div>)
-        }
-
+              </Form.Group>
+              ) : (<div></div>)
+          }
+          <Form.Label><h5>Descrizione</h5></Form.Label>
+          <Form.Control value={this.state.description}
+                        onChange={this.handleDescriptionChange}
+                        as="textarea"
+                        rows="3"
+                        required/>
+        </Form.Group>
         {
           this.state.schema.length !== 0 ? (
             <div>
@@ -94,7 +108,7 @@ class VariableEditForm extends React.Component {
                 <Col>
                   <Form.Control
                     type="text"
-                    placeholder={`Shareholder #${idx + 1} name`}
+                    placeholder={`Nome #${idx + 1}`}
                     value={field.name}
                     onChange={this.handleShareholderNameChange(idx)}
                     required
@@ -102,7 +116,6 @@ class VariableEditForm extends React.Component {
                 </Col>
                 <Col>
                   <Form.Control as="select"
-                    placeholder={`Campo numero #${idx + 1} type`}
                     value={field.type}
                     onChange={this.handleShareholderTypeChange(idx)}>
                     <option value="text">testo</option>

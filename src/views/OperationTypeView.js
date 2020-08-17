@@ -7,7 +7,8 @@ class OperationTypeView extends React.Component {
   }
 
   addItem = (item) => {
-    item.barrel_set = this.props.match.params.setID;
+    item.id = item.name.toLowerCase().replace(/\s/g, '');
+    console.log(item);
     fetch("http://localhost:8000/api/operation_type/", {
       method: 'POST',
       headers: {
@@ -48,7 +49,6 @@ class OperationTypeView extends React.Component {
           ...this.state.items.slice(itemIndex + 1)
         ]
         this.setState({ items: newArray });
-
       })
       .catch(err => console.log(err));
   }
@@ -80,15 +80,22 @@ class OperationTypeView extends React.Component {
     return (
       <div>
         <h1 style={{margin: "20px 0"}}>Tipologie di operazioni</h1>
-        {/*<VariableEditForm fields={this.state.fields}/>*/}
         <DataTable objectName="Operazione"
-                            fields={[{
-                                          field: 'id',
-                                          name: 'Nome',
-                                          type: '',
-                                          modifiable: false
-                                        }
-                                    ]}
+                    detailed={["/operation", "Vedi tutti"]}
+                    fields={[
+                              {
+                                field: 'name',
+                                name: 'Nome',
+                                type: 'text',
+                                modifiable: false
+                              },
+                              {
+                                field: 'description',
+                                name: 'Descrizione',
+                                type: 'textArea',
+                                modifiable: false
+                              }
+                            ]}
                             items={this.state.items}
                             addAction={this.addItem}
                             updateAction={this.updateItem}

@@ -28,7 +28,7 @@ class BarrelView extends React.Component {
   }
 
   updateItem = (item) => {
-    fetch(`http://localhost:8000/api/barrel/${item.id}`, {
+    fetch(`http://localhost:8000/api/barrel/${item.id}/`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

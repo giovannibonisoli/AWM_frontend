@@ -15,7 +15,7 @@ class DataTable extends Component {
           <thead>
             <tr>
               {this.props.fields.map(field => <th key={field.field}>{field.name}</th>)}
-              <th></th>
+              <th width="30%"></th>
             </tr>
           </thead>
           <tbody>

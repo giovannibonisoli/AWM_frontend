@@ -2,6 +2,8 @@ import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
+import BarrelSelect from './BarrelSelect';
+
 class EditForm extends React.Component {
   state = {}
 
@@ -37,19 +39,31 @@ class EditForm extends React.Component {
               )
             }
             else{
-              return(
-                <Form.Group key={field.field}>
-                  <Form.Label><h5>{field.name}</h5></Form.Label>
-                  <Form.Control name={field.field}
-                                min={field.min}
-                                max={field.max}
-                                value={this.state[field.field]}
-                                type={field.type}
-                                onChange={this.onChange}
-                                placeholder={field.name}
-                                required/>
-                </Form.Group>
-              )
+              if(field.type === "barrel"){
+                return(
+                  <Form.Group key={field.field}>
+                    <Form.Label><h5>{field.name}</h5></Form.Label>
+                    <BarrelSelect name={field.field}
+                                  value={this.state[field.field]}
+                                  onChange={this.onChange}/>
+                  </Form.Group>
+                )
+              }
+              else{
+                return(
+                  <Form.Group key={field.field}>
+                    <Form.Label><h5>{field.name}</h5></Form.Label>
+                    <Form.Control name={field.field}
+                                  min={field.min}
+                                  max={field.max}
+                                  value={this.state[field.field]}
+                                  type={field.type}
+                                  onChange={this.onChange}
+                                  placeholder={field.name}
+                                  required/>
+                  </Form.Group>
+                )
+              }
             }
           })}
         <hr />

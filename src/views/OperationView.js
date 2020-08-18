@@ -32,6 +32,7 @@ class OperationView extends React.Component {
   objectName = "";
 
   addItem = (item) => {
+    console.log(item);
     let newItem = {}
     let values = {};
     this.state.schema.map(field => {
@@ -55,17 +56,16 @@ class OperationView extends React.Component {
       },
       body: JSON.stringify(newItem)
     })
-      .then(response => {
-        console.log(response.statusText);
-        return response.statusText === 'Created' ? response.json() : null
-      })
-      .then(item => {
-        let newItem  = {...item, ...JSON.parse(item.values)};
-        this.setState(prevState => ({
-          items: [...prevState.items, newItem]
-        }))
-      })
-      .catch(err => console.log(err));
+    .then(response => {
+      return response.statusText === 'Created' ? response.json() : null
+    })
+    .then(item => {
+      let newItem  = {...item, ...JSON.parse(item.values)};
+      this.setState(prevState => ({
+        items: [...prevState.items, newItem]
+      }))
+    })
+    .catch(err => console.log(err));
   }
 
   updateItem = (updatedItem) => {
@@ -126,7 +126,6 @@ class OperationView extends React.Component {
             items = items.map(item => {
               return {...item, ...JSON.parse(item.values)};
             });
-            console.log(items);
             this.setState({items})
           })
           .catch(err => console.log(err))

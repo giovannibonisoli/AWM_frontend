@@ -6,16 +6,16 @@ class OperationTypeView extends React.Component {
     items: []
   }
 
-  addItem = (item) => {
-    item.id = item.name.toLowerCase().replace(/\s/g, '');
-    item.schema = JSON.stringify(item.schema);
+  addItem = (newItem) => {
+    newItem.id = newItem.name.toLowerCase().replace(/\s/g, '');
+    newItem.schema = JSON.stringify(newItem.schema);
     fetch("http://localhost:8000/api/operation_type/", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json'
       },
-      body: JSON.stringify(item)
+      body: JSON.stringify(newItem)
     })
       .then(response => {
         return response.statusText === 'Created' ? response.json() : null
@@ -29,6 +29,7 @@ class OperationTypeView extends React.Component {
   }
 
   updateItem = (updatedItem) => {
+    updatedItem.schema = JSON.stringify(updatedItem.schema);
     fetch(`http://localhost:8000/api/operation_type/${updatedItem.id}/`, {
       method: 'PUT',
       headers: {

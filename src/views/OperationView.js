@@ -115,7 +115,11 @@ class OperationView extends React.Component {
       .then(response => response.json())
       .then(type => {
         this.objectName = type.name
-        this.setState({schema: [...this.state.schema, ...JSON.parse(type.schema)]});
+        let schema = JSON.parse(type.schema);
+        schema.forEach((item, i) => {
+          item.modifiable = true;
+        })
+        this.setState({schema: [...this.state.schema, ...schema]});
         fetch(`http://localhost:8000/api/operation/${this.props.match.params.name}/`)
           .then(response => response.json())
           .then(items => {

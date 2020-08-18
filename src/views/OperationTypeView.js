@@ -8,7 +8,7 @@ class OperationTypeView extends React.Component {
 
   addItem = (item) => {
     item.id = item.name.toLowerCase().replace(/\s/g, '');
-    console.log(item);
+    item.schema = JSON.stringify(item.schema);
     fetch("http://localhost:8000/api/operation_type/", {
       method: 'POST',
       headers: {
@@ -80,7 +80,7 @@ class OperationTypeView extends React.Component {
     return (
       <div>
         <h1 style={{margin: "20px 0"}}>Tipi di operazione</h1>
-        <DataTable objectName="Operazione"
+        <DataTable objectName="Tipo di Operazione"
                     detailed={["/operation", "Vedi tutti"]}
                     fields={[
                               {

@@ -5,15 +5,11 @@ import Col from 'react-bootstrap/Col';
 
 class VariableEditForm extends React.Component {
   state = {
-    schema: [{ field:"", name: "", type: "" }]
+    schema: [{ field:"", name: "", type: ""}]
   }
 
-  handleNameChange = e => {
-    this.setState({ name: e.target.value });
-  };
-
-  handleDescriptionChange = e => {
-    this.setState({ description: e.target.value });
+  onChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
   };
 
   handleShareholderNameChange = idx => e => {
@@ -37,9 +33,10 @@ class VariableEditForm extends React.Component {
   handleSubmit = e => {
     e.preventDefault();
     this.props.action({
+      id : this.state.id,
       name: this.state.name,
       description: this.state.description,
-      schema: JSON.stringify(this.state.schema)
+      schema: this.state.schema
     });
     this.props.toggle();
   };
@@ -59,6 +56,7 @@ class VariableEditForm extends React.Component {
   componentDidMount(){
     if(this.props.item){
       this.setState({
+        id : this.props.item.id,
         name: this.props.item.name,
         description: this.props.item.description,
         schema: JSON.parse(this.props.item.schema)
@@ -74,18 +72,20 @@ class VariableEditForm extends React.Component {
           <Form.Label><h5>Nome Operazione</h5></Form.Label>
           {
             !this.props.item ? (
-                <Form.Control type="text"
+                <Form.Control name="name"
+                              type="text"
                               placeholder="Operation name"
                               value={this.state.name}
-                              onChange={this.handleNameChange}
+                              onChange={this.onChange}
                               required />
               ) : (<div>{this.state.name}<br/></div>)
           }
         </Form.Group>
         <Form.Group>
           <Form.Label><h5>Descrizione</h5></Form.Label>
-          <Form.Control value={this.state.description}
-                        onChange={this.handleDescriptionChange}
+          <Form.Control name="description"
+                        value={this.state.description}
+                        onChange={this.onChange}
                         as="textarea"
                         rows="3"
                         required/>

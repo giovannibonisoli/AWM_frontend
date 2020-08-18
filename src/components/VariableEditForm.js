@@ -71,20 +71,18 @@ class VariableEditForm extends React.Component {
     return (
       <Form onSubmit={this.handleSubmit}>
         <Form.Group>
+          <Form.Label><h5>Nome Operazione</h5></Form.Label>
           {
             !this.props.item ? (
-              <Form.Group>
-                <Form.Label><h5>Nome Operazione</h5></Form.Label>
                 <Form.Control type="text"
                               placeholder="Operation name"
                               value={this.state.name}
                               onChange={this.handleNameChange}
                               required />
-                <br/>
-
-              </Form.Group>
-              ) : (<div></div>)
+              ) : (<div>{this.state.name}<br/></div>)
           }
+        </Form.Group>
+        <Form.Group>
           <Form.Label><h5>Descrizione</h5></Form.Label>
           <Form.Control value={this.state.description}
                         onChange={this.handleDescriptionChange}

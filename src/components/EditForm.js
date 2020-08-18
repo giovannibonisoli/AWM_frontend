@@ -27,6 +27,16 @@ class EditForm extends React.Component {
     return (
       <Form onSubmit={this.submitForm}>
           {this.props.fields.map(field => {
+            if (this.props.item !== undefined & !field.modifiable){
+              return(
+                <Form.Group key={field.field}>
+                  <Form.Label><h5>{field.name}</h5></Form.Label>
+                  <br />
+                  {this.state[field.field]}
+                </Form.Group>
+              )
+            }
+            else{
               return(
                 <Form.Group key={field.field}>
                   <Form.Label><h5>{field.name}</h5></Form.Label>
@@ -40,7 +50,9 @@ class EditForm extends React.Component {
                                 required/>
                 </Form.Group>
               )
+            }
           })}
+        <hr />
         <div class="float-xl-right">
           <Button variant="secondary" onClick={this.props.toggle}>Annulla</Button>
           {' '}

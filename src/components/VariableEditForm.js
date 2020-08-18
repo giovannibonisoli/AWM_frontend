@@ -5,7 +5,6 @@ import Col from 'react-bootstrap/Col';
 
 class VariableEditForm extends React.Component {
   state = {
-    description: "",
     schema: [{ field:"", name: "", type: "" }]
   }
 

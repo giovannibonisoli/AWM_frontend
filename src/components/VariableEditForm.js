@@ -118,7 +118,6 @@ class VariableEditForm extends React.Component {
                     <option value="text">testo</option>
                     <option value="number">numero</option>
                     <option value="barrel">barile</option>
-                    <option value="barrel_set">batteria</option>
                   </Form.Control>
                 </Col>
                 <Col xs="auto" className="my-1">

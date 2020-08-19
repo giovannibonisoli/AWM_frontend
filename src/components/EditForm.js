@@ -19,7 +19,9 @@ class EditForm extends React.Component {
 
   componentDidMount(){
     if(this.props.item){
-      this.props.fields.map(field => this.setState({[field.field]: this.props.item[field.field]}));
+      Object.keys(this.props.item).forEach(key => {
+        this.setState({[key]: this.props.item[key]})
+      });
     }
   }
 

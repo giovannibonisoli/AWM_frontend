@@ -1,7 +1,7 @@
 import React from 'react';
 
 import DataTable from '../components/DataTable';
-import { get, post } from '../helpers/requests';
+import { request } from '../helpers/requests';
 
 class BarrelView extends React.Component {
   state = {
@@ -10,36 +10,26 @@ class BarrelView extends React.Component {
 
   addItem = async (item) => {
     item.barrel_set = this.props.match.params.setID;
-    let newItem = await post("barrel/", item);
+    let newItem = await request("barrel/", 'POST', item);
     this.setState(prevState => ({
       items: [...prevState.items, newItem]
     }));
   }
 
-  updateItem = (item) => {
-    fetch(`http://localhost:8000/api/barrel/${item.id}/`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json'
-      },
-      body: JSON.stringify(item)
-    })
-      .then(response => response.json())
-      .then(item => {
-        const itemIndex = this.state.items.findIndex(data => data.id === item.id);
-        const newArray = [
-        // destructure all items from beginning to the indexed item
-          ...this.state.items.slice(0, itemIndex),
-        // add the updated item to the array
-          item,
-        // add the rest of the items to the array from the index after the replaced item
-          ...this.state.items.slice(itemIndex + 1)
-        ]
-        this.setState({ items: newArray });
+  updateItem = async (item) => {
+    console.log(item);
+    let updatedItem = await request (`barrel/${item.id}/`, 'PUT', item);
 
-      })
-      .catch(err => console.log(err));
+    const itemIndex = this.state.items.findIndex(data => data.id === updatedItem.id);
+    const newArray = [
+      // destructure all items from beginning to the indexed item
+      ...this.state.items.slice(0, itemIndex),
+      // add the updated item to the array
+      item,
+      // add the rest of the items to the array from the index after the replaced item
+      ...this.state.items.slice(itemIndex + 1)
+    ]
+    this.setState({ items: newArray });
   }
 
   deleteItem = (id) => {
@@ -59,7 +49,7 @@ class BarrelView extends React.Component {
   }
 
   async componentDidMount(){
-    this.setState({items: await get(`barrel/set/${this.props.match.params.setID}/`)});
+    this.setState({items: await request(`barrel/set/${this.props.match.params.setID}/`, 'GET')});
   }
 
   render() {

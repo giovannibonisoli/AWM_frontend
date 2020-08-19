@@ -1,7 +1,7 @@
 import React from 'react';
 
 import DataTable from '../components/DataTable';
-import { get, post } from '../helpers/requests';
+import { request } from '../helpers/requests';
 
 class BarrelSetView extends React.Component {
   state = {
@@ -9,56 +9,35 @@ class BarrelSetView extends React.Component {
   }
 
   addItem = async (item) => {
-    let newItem = await post("barrel_set/", item);
+    let newItem = await request ("barrel_set/", 'POST', item);
     this.setState(prevState => ({
       items: [...prevState.items, newItem]
     }));
   }
 
-  updateItem = (item) => {
-    fetch(`http://localhost:8000/api/barrel_set/${item.id}/`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json'
-      },
-      body: JSON.stringify(item)
-    })
-      .then(response => response.json())
-      .then(item => {
-        const itemIndex = this.state.items.findIndex(data => data.id === item.id);
-        const newArray = [
-        // destructure all items from beginning to the indexed item
-          ...this.state.items.slice(0, itemIndex),
-        // add the updated item to the array
-          item,
-        // add the rest of the items to the array from the index after the replaced item
-          ...this.state.items.slice(itemIndex + 1)
-        ]
-        this.setState({ items: newArray });
+  updateItem = async (item) => {
+    let updatedItem = await request (`barrel_set/${item.id}/`, 'PUT', item);
 
-      })
-      .catch(err => console.log(err));
+    const itemIndex = this.state.items.findIndex(data => data.id === updatedItem.id);
+    const newArray = [
+      // destructure all items from beginning to the indexed item
+      ...this.state.items.slice(0, itemIndex),
+      // add the updated item to the array
+      updatedItem,
+      // add the rest of the items to the array from the index after the replaced item
+      ...this.state.items.slice(itemIndex + 1)
+    ]
+    this.setState({ items: newArray });
   }
 
-  deleteItem = (id) => {
-    fetch(`http://localhost:8000/api/barrel_set/${id}/`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-          Accept: 'application/json'
-      }
-    })
-    .then(response => response.statusText === 'No Content' ? null : response.json())
-    .then(item => {
-      const updatedItems = this.state.items.filter(item => item.id !== id);
-      this.setState({ items: updatedItems });
-    })
-    .catch(err => console.log(err));
+  deleteItem = async (id) => {
+    await request (`barrel_set/${id}/`, 'DELETE');
+    const updatedItems = this.state.items.filter(item => item.id !== id);
+    this.setState({ items: updatedItems });
   }
 
   async componentDidMount(){
-    this.setState({items: await get("barrel_set/")});
+    this.setState({items: await request ("barrel_set/", 'GET')});
   }
 
   render() {

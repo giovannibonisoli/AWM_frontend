@@ -140,6 +140,7 @@ class VariableEditForm extends React.Component {
           +
         </Button>
       </Form.Group>
+      <hr />
       <div class="float-xl-right">
         <Button variant="secondary" onClick={this.props.toggle}>Annulla</Button>
         {' '}

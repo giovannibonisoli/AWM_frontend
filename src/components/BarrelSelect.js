@@ -1,19 +1,15 @@
 import React from 'react';
 import Form from 'react-bootstrap/Form';
 
+import { get } from '../helpers/requests';
+
 class BarrelSelect extends React.Component {
   state = {
     barrels: []
   }
 
-  componentDidMount(){
-    fetch(`http://localhost:8000/api/barrel/`)
-      .then(response => response.json())
-      .then(items => {
-        this.setState({ barrels: items});
-        this.props.onChange({target: {name: this.props.name, value: this.state.barrels[0].id}})
-      })
-      .catch(err => console.log(err))
+  async componentDidMount(){
+    this.setState({ barrels: await get("barrel/")});
   }
 
   render() {

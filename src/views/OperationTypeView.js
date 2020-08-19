@@ -1,5 +1,7 @@
 import React from 'react';
+
 import DataTable from '../components/DataTable';
+import { get } from '../helpers/requests';
 
 class OperationTypeView extends React.Component {
   state = {
@@ -70,11 +72,8 @@ class OperationTypeView extends React.Component {
     .catch(err => console.log(err));
   }
 
-  componentDidMount(){
-    fetch(`http://localhost:8000/api/operation_type/`)
-      .then(response => response.json())
-      .then(items => this.setState({items}))
-      .catch(err => console.log(err))
+  async componentDidMount(){
+    this.setState({items: await get("operation_type/")});
   }
 
   render() {

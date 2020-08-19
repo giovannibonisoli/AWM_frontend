@@ -2,6 +2,7 @@ import React from 'react';
 
 import DataTable from '../components/DataTable';
 import { serializeFields, deserializeFields } from '../helpers/variableObjects';
+import { get } from '../helpers/requests';
 
 class OperationView extends React.Component {
   state = {
@@ -101,27 +102,18 @@ class OperationView extends React.Component {
     .catch(err => console.log(err));
   }
 
-  componentDidMount(){
-    fetch(`http://localhost:8000/api/operation_type/${this.props.match.params.name}/`)
-      .then(response => response.json())
-      .then(type => {
-        this.objectName = type.name
-        let schema = JSON.parse(type.schema);
-        schema.forEach((item, i) => {
-          item.modifiable = true;
-        })
-        this.setState({schema: [...this.state.schema, ...schema]});
-        fetch(`http://localhost:8000/api/operation/${this.props.match.params.name}/`)
-          .then(response => response.json())
-          .then(items => {
-            items = items.map(item => {
-              return deserializeFields(item, "values");
-            });
-            this.setState({items})
-          })
-          .catch(err => console.log(err))
-      })
-      .catch(err => console.log(err));
+  async componentDidMount(){
+    let type = await get(`operation_type/${this.props.match.params.name}/`);
+    this.objectName = type.name;
+    let schema = JSON.parse(type.schema);
+    schema.forEach((item, i) => {
+      item.modifiable = true;
+    })
+    this.setState({schema: [...this.state.schema, ...schema]});
+
+    let items = await get(`operation/${this.props.match.params.name}/`);
+    items = items.map(item => deserializeFields(item, "values"));
+    this.setState({items: items});
   }
 
   render() {

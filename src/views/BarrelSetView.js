@@ -1,5 +1,7 @@
 import React from 'react';
+
 import DataTable from '../components/DataTable';
+import { get } from '../helpers/requests';
 
 class BarrelSetView extends React.Component {
   state = {
@@ -68,11 +70,8 @@ class BarrelSetView extends React.Component {
     .catch(err => console.log(err));
   }
 
-  componentDidMount(){
-    fetch("http://localhost:8000/api/barrel_set/")
-      .then(response => response.json())
-      .then(items => this.setState({items}))
-      .catch(err => console.log(err))
+  async componentDidMount(){
+    this.setState({items: await get("barrel_set/")});
   }
 
   render() {

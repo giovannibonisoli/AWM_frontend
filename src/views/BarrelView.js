@@ -1,32 +1,19 @@
 import React from 'react';
 
 import DataTable from '../components/DataTable';
-import { get } from '../helpers/requests';
+import { get, post } from '../helpers/requests';
 
 class BarrelView extends React.Component {
   state = {
     items: []
   }
 
-  addItem = (item) => {
+  addItem = async (item) => {
     item.barrel_set = this.props.match.params.setID;
-    fetch("http://localhost:8000/api/barrel/", {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json'
-      },
-      body: JSON.stringify(item)
-    })
-      .then(response => {
-        return response.statusText === 'Created' ? response.json() : null
-      })
-      .then(item => {
-        this.setState(prevState => ({
-          items: [...prevState.items, item]
-        }))
-      })
-      .catch(err => console.log(err));
+    let newItem = await post("barrel/", item);
+    this.setState(prevState => ({
+      items: [...prevState.items, newItem]
+    }));
   }
 
   updateItem = (item) => {
@@ -72,7 +59,7 @@ class BarrelView extends React.Component {
   }
 
   async componentDidMount(){
-    this.setState({items: await get(`set/${this.props.match.params.setID}/`)});
+    this.setState({items: await get(`barrel/set/${this.props.match.params.setID}/`)});
   }
 
   render() {

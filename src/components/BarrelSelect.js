@@ -19,7 +19,7 @@ class BarrelSelect extends React.Component {
         value={this.props.value}
         onChange={e => this.props.onChange(e)}>
           {this.state.barrels.map(barrel => {
-            return (<option value={barrel.id}>{barrel.id}</option>)
+            return (<option key={barrel.id} value={barrel.id}>{barrel.id}</option>)
           })}
       </Form.Control>
     )

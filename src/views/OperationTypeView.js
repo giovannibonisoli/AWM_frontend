@@ -1,33 +1,20 @@
 import React from 'react';
 
 import DataTable from '../components/DataTable';
-import { get } from '../helpers/requests';
+import { get, post } from '../helpers/requests';
 
 class OperationTypeView extends React.Component {
   state = {
     items: []
   }
 
-  addItem = (newItem) => {
-    newItem.id = newItem.name.toLowerCase().replace(/\s/g, '');
-    newItem.schema = JSON.stringify(newItem.schema);
-    fetch("http://localhost:8000/api/operation_type/", {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json'
-      },
-      body: JSON.stringify(newItem)
-    })
-      .then(response => {
-        return response.statusText === 'Created' ? response.json() : null
-      })
-      .then(item => {
-        this.setState(prevState => ({
-          items: [...prevState.items, item]
-        }))
-      })
-      .catch(err => console.log(err));
+  addItem = async (item) => {
+    item.id = item.name.toLowerCase().replace(/\s/g, '');
+    item.schema = JSON.stringify(item.schema);
+    let newItem = await post("operation_type/", item);
+    this.setState(prevState => ({
+      items: [...prevState.items, newItem]
+    }));
   }
 
   updateItem = (updatedItem) => {

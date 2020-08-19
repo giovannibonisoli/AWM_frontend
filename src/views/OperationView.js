@@ -2,7 +2,7 @@ import React from 'react';
 
 import DataTable from '../components/DataTable';
 import { serializeFields, deserializeFields } from '../helpers/variableObjects';
-import { get } from '../helpers/requests';
+import { get, post } from '../helpers/requests';
 
 class OperationView extends React.Component {
   state = {
@@ -34,27 +34,14 @@ class OperationView extends React.Component {
 
   objectName = "";
 
-  addItem = (item) => {
-    let newItem = serializeFields(item, this.state.schema);
+  addItem = async (item) => {
+    let serializedItem = serializeFields(item, this.state.schema);
+    serializedItem.type = this.props.match.params.name;
+    let newItem = await post(`operation/${this.props.match.params.name}/`, serializedItem);
+    this.setState(prevState => ({
+      items: [...prevState.items, deserializeFields(newItem, "values")]
+    }))
 
-    newItem.type = this.props.match.params.name;
-    fetch(`http://localhost:8000/api/operation/${this.props.match.params.name}/`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json'
-      },
-      body: JSON.stringify(newItem)
-    })
-    .then(response => {
-      return response.statusText === 'Created' ? response.json() : null
-    })
-    .then(item => {
-      this.setState(prevState => ({
-        items: [...prevState.items, deserializeFields(item, "values")]
-      }))
-    })
-    .catch(err => console.log(err));
   }
 
   updateItem = (item) => {

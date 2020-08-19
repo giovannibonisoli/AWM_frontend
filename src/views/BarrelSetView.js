@@ -1,31 +1,18 @@
 import React from 'react';
 
 import DataTable from '../components/DataTable';
-import { get } from '../helpers/requests';
+import { get, post } from '../helpers/requests';
 
 class BarrelSetView extends React.Component {
   state = {
     items: []
   }
 
-  addItem = (item) => {
-    fetch("http://localhost:8000/api/barrel_set/", {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json'
-      },
-      body: JSON.stringify(item)
-    })
-      .then(response => {
-        return response.statusText === 'Created' ? response.json() : null
-      })
-      .then(item => {
-        this.setState(prevState => ({
-          items: [...prevState.items, item]
-        }))
-      })
-      .catch(err => console.log(err));
+  addItem = async (item) => {
+    let newItem = await post("barrel_set/", item);
+    this.setState(prevState => ({
+      items: [...prevState.items, newItem]
+    }));
   }
 
   updateItem = (item) => {

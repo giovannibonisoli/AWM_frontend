@@ -17,7 +17,6 @@ class BarrelView extends React.Component {
   }
 
   updateItem = async (item) => {
-    console.log(item);
     let updatedItem = await request (`barrel/${item.id}/`, 'PUT', item);
 
     const itemIndex = this.state.items.findIndex(data => data.id === updatedItem.id);
@@ -25,27 +24,17 @@ class BarrelView extends React.Component {
       // destructure all items from beginning to the indexed item
       ...this.state.items.slice(0, itemIndex),
       // add the updated item to the array
-      item,
+      updatedItem,
       // add the rest of the items to the array from the index after the replaced item
       ...this.state.items.slice(itemIndex + 1)
     ]
     this.setState({ items: newArray });
   }
 
-  deleteItem = (id) => {
-    fetch(`http://localhost:8000/api/barrel/${id}/`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-          Accept: 'application/json'
-      }
-    })
-    .then(response => response.statusText === 'No Content' ? null : response.json())
-    .then(item => {
-      const updatedItems = this.state.items.filter(item => item.id !== id);
-      this.setState({ items: updatedItems });
-    })
-    .catch(err => console.log(err));
+  deleteItem = async (id) => {
+    await request (`barrel/${id}/`, 'DELETE');
+    const updatedItems = this.state.items.filter(item => item.id !== id);
+    this.setState({ items: updatedItems });
   }
 
   async componentDidMount(){

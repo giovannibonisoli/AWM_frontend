@@ -11,6 +11,7 @@ class BarrelSelect extends React.Component {
       .then(response => response.json())
       .then(items => {
         this.setState({ barrels: items});
+        this.props.onChange({target: {name: this.props.name, value: this.state.barrels[0].id}})
       })
       .catch(err => console.log(err))
   }
@@ -20,7 +21,7 @@ class BarrelSelect extends React.Component {
       <Form.Control as="select"
         name={this.props.name}
         value={this.props.value}
-        onChange={this.props.onChange}>
+        onChange={e => this.props.onChange(e)}>
           {this.state.barrels.map(barrel => {
             return (<option value={barrel.id}>{barrel.id}</option>)
           })}

@@ -1,5 +1,7 @@
 import React from 'react';
+
 import DataTable from '../components/DataTable';
+import { serializeFields, deserializeFields } from '../helpers/variableObjects';
 
 class OperationView extends React.Component {
   state = {
@@ -32,22 +34,9 @@ class OperationView extends React.Component {
   objectName = "";
 
   addItem = (item) => {
-    console.log(item);
-    let newItem = {}
-    let values = {};
-    this.state.schema.map(field => {
-      if(field.fixed){
-        newItem[field.field] = item[field.field];
-      }
-      else{
-        values[field.field] = item[field.field];
-      }
-      return null;
-    });
-    newItem.values = JSON.stringify(values);
+    let newItem = serializeFields(item, this.state.schema);
 
     newItem.type = this.props.match.params.name;
-    console.log(newItem);
     fetch(`http://localhost:8000/api/operation/${this.props.match.params.name}/`, {
       method: 'POST',
       headers: {
@@ -60,15 +49,17 @@ class OperationView extends React.Component {
       return response.statusText === 'Created' ? response.json() : null
     })
     .then(item => {
-      let newItem  = {...item, ...JSON.parse(item.values)};
       this.setState(prevState => ({
-        items: [...prevState.items, newItem]
+        items: [...prevState.items, deserializeFields(item, "values")]
       }))
     })
     .catch(err => console.log(err));
   }
 
-  updateItem = (updatedItem) => {
+  updateItem = (item) => {
+    let updatedItem = serializeFields(item, this.state.schema);
+    updatedItem.type = this.props.match.params.name;
+
     fetch(`http://localhost:8000/api/operation/${this.props.match.params.name}/${updatedItem.id}/`, {
       method: 'PUT',
       headers: {
@@ -84,7 +75,7 @@ class OperationView extends React.Component {
         // destructure all items from beginning to the indexed item
           ...this.state.items.slice(0, itemIndex),
         // add the updated item to the array
-          item,
+          deserializeFields(item, "values"),
         // add the rest of the items to the array from the index after the replaced item
           ...this.state.items.slice(itemIndex + 1)
         ]
@@ -124,7 +115,7 @@ class OperationView extends React.Component {
           .then(response => response.json())
           .then(items => {
             items = items.map(item => {
-              return {...item, ...JSON.parse(item.values)};
+              return deserializeFields(item, "values");
             });
             this.setState({items})
           })

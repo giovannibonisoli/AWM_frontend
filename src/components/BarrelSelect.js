@@ -1,7 +1,7 @@
 import React from 'react';
 import Form from 'react-bootstrap/Form';
 
-import { get } from '../helpers/requests';
+import { request } from '../helpers/requests';
 
 class BarrelSelect extends React.Component {
   state = {
@@ -9,7 +9,7 @@ class BarrelSelect extends React.Component {
   }
 
   async componentDidMount(){
-    this.setState({ barrels: await get("barrel/")});
+    this.setState({ barrels: await request("barrel/", 'GET')});
   }
 
   render() {

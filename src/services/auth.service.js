@@ -15,8 +15,9 @@ class AuthService {
   }
 
   isLoggedIn = () => {
-    if(localStorage.getItem('user'))
+    if(localStorage.getItem('user')){
       return true;
+    }
     return false;
   }
 

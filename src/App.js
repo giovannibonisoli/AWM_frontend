@@ -1,9 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router} from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.css';
 
-import BaseRouter from './routes';
-import CustomNavBar from './components/CustomNavBar';
+import { LoginRouter, PrivateRouter } from './routes';
+import 'bootstrap/dist/css/bootstrap.css';
 
 
 class App extends React.Component {
@@ -11,8 +10,8 @@ class App extends React.Component {
   render(){
     return (
         <Router>
-          <CustomNavBar />
-          <BaseRouter />
+          <LoginRouter />
+          <PrivateRouter />
         </Router>
     );
   }

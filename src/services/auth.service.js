@@ -1,21 +1,27 @@
 import { request } from '../helpers/requests';
 
 class AuthService {
-  async login(username, password) {
+
+  login = async (username, password) => {
     let res = await request("token/", 'POST', { username, password });
-    console.log(res);
     if (res.access) {
-      localStorage.setItem("user", res);
+      localStorage.setItem("user", JSON.stringify(res));
     }
     return res.data;
   }
 
-  logout() {
+  logout = () => {
     localStorage.removeItem("user");
   }
 
-  getCurrentUser() {
-    return JSON.parse(localStorage.getItem('user'));;
+  isLoggedIn = () => {
+    if(localStorage.getItem('user'))
+      return true;
+    return false;
+  }
+
+  getCurrentUser = () => {
+    return JSON.parse(localStorage.getItem('user'));
   }
 }
 

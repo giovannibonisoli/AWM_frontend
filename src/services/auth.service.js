@@ -5,8 +5,7 @@ class AuthService {
   login = async (username, password) => {
     let res = await request("token/", 'POST', { username, password });
     if (res.access) {
-      localStorage.setItem("user", username);
-      localStorage.setItem("token", res);
+      localStorage.setItem("user", JSON.stringify({ name: username , token: res}) );
     }
 
     return res;
@@ -23,7 +22,8 @@ class AuthService {
   }
 
   getCurrentUser = () => {
-    return JSON.parse(localStorage.getItem('user'));
+    const user = JSON.parse(localStorage.getItem('user'));
+    return user.name;
   }
 }
 

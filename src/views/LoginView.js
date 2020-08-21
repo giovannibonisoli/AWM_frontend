@@ -26,6 +26,10 @@ class LoginView extends React.Component {
 
     AuthService.login(this.state.username, this.state.password)
     .then(() => {
+        this.setState({
+          loading: false,
+          message: ''
+        });
         this.props.history.push('/home');
       },
       error => {

@@ -6,7 +6,7 @@ class HomeView extends React.Component {
 
   render (){
     return (
-      <h1>Ciao "{AuthService.getCurrentUser()}"</h1>
+      <h1>Ciao "{AuthService.getCurrentUser().name}"</h1>
     )
   }
 }

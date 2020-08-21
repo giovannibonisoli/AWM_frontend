@@ -45,7 +45,7 @@ class BarrelSetView extends React.Component {
       <div>
         <h1 style={{margin: "20px 0"}}>Batterie</h1>
         <DataTable objectName="Batteria"
-                    detailed={["/barrel_set", "Visualizza Barili"]}
+                    detailed={["/barrel", "Visualizza Barili"]}
                     fields={[
                               {
                                 field: 'id',

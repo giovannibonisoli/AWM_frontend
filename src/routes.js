@@ -45,7 +45,7 @@ export const BaseRouter = (props) => {
         <PublicRoute path='/login' component={LoginView} />
         <PrivateRoute path='/home' component={HomeView} />
         <PrivateRoute path='/barrel_set' component={BarrelSetView} />
-        <PrivateRoute path='/barrel_set/:setID' component={BarrelView} />
+        <PrivateRoute path='/barrel/:setID' component={BarrelView} />
         <PrivateRoute path='/operation_type' component={OperationTypeView} />
         <PrivateRoute path='/operation/:name' component={OperationView} />
         <PrivateRoute path='/logout' component={LogoutView} />

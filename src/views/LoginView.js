@@ -1,7 +1,6 @@
 import React from 'react';
 import Form from 'react-bootstrap/Form';
 import Button  from 'react-bootstrap/Button';
-import { useHistory } from "react-router-dom";
 
 import AuthService from '../services/auth.service';
 
@@ -15,6 +14,7 @@ class LoginView extends React.Component {
       message: ""
     };
 
+
   onChange = e => {
     this.setState({[e.target.name]: e.target.value});
   }
@@ -26,8 +26,10 @@ class LoginView extends React.Component {
       loading: true
     });
 
+
     AuthService.login(this.state.username, this.state.password)
     .then(() => {
+        this.props.history.push('/barrel_set');
       },
       error => {
         const resMessage =

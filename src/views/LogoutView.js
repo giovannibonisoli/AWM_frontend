@@ -18,7 +18,7 @@ class LogoutView extends React.Component {
 
   handlelogout = () => {
     AuthService.logout();
-    window.location.reload(false);
+    this.props.history.push('/logout');
   }
 
   render() {

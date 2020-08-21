@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import { Route, Redirect, Switch } from 'react-router-dom';
 
 import CustomNavBar from './components/CustomNavBar';
 import LoginView from './views/LoginView';
@@ -11,27 +11,46 @@ import OperationView from './views/OperationView';
 
 import AuthService from '../src/services/auth.service';
 
-export const PrivateRouter = (props) => {
-
+const PrivateRoute = ({component: Component, ...rest}) => {
   return (
-    AuthService.isLoggedIn() ? (
-      <div>
-        <CustomNavBar />
-        <Route exact path='/logout' component={LogoutView} />
-        <Route exact path='/barrel_set' component={BarrelSetView} />
-        <Route exact path='/barrel_set/:setID' component={BarrelView} />
-        <Route exact path='/operation_type' component={OperationTypeView} />
-        <Route exact path='/operation/:name' component={OperationView} />
-      </div>
-    ) : (<Redirect to={{ pathname: '/login', state: { from: props.location } }} />)
-  )
+    <Route {...rest} render={props => (
+      AuthService.isLoggedIn() ? (
+        <div>
+          {props.location.pathname !== '/logout' ?
+            <CustomNavBar /> : <div></div>
+          }
+          <Component {...props} />
+        </div>
+      )
+      : <Redirect to="/login" />
+    )} />
+  );
 };
 
-export const LoginRouter = (props) => {
-
+const PublicRoute = ({component: Component, ...rest}) => {
+  console.log(rest);
   return (
-    !AuthService.isLoggedIn() ? (
-      <Route exact path='/login' component={LoginView}/>
-    ) : (<div></div>)
+    <Route {...rest} render={props => (
+      AuthService.isLoggedIn() ?
+        <Redirect to="/home" />
+          : <Component {...props} />
+    )} />
+  );
+};
+
+export const BaseRouter = (props) => {
+  return (
+    <div>
+      <Switch>
+        <PublicRoute path='/login' component={LoginView} />
+        <PrivateRoute path='/home' component={() => (<h1>Ciao</h1>)} />
+        <PrivateRoute path='/barrel_set' component={BarrelSetView} />
+        <PrivateRoute path='/barrel_set/:setID' component={BarrelView} />
+        <PrivateRoute path='/operation_type' component={OperationTypeView} />
+        <PrivateRoute path='/operation/:name' component={OperationView} />
+        <PrivateRoute path='/logout' component={LogoutView} />
+        <PrivateRoute component={() => (<h1>Pagina non trovata</h1>)} />
+      </Switch>
+    </div>
   )
 };

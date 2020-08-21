@@ -1,13 +1,15 @@
 import { request } from '../helpers/requests';
 
-class AuthService {
+class AuthService{
 
   login = async (username, password) => {
     let res = await request("token/", 'POST', { username, password });
     if (res.access) {
+
       localStorage.setItem("user", JSON.stringify(res));
     }
-    return res.data;
+
+    return res;
   }
 
   logout = () => {
@@ -15,9 +17,8 @@ class AuthService {
   }
 
   isLoggedIn = () => {
-    if(localStorage.getItem('user')){
+    if(localStorage.getItem('user'))
       return true;
-    }
     return false;
   }
 

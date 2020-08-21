@@ -8,8 +8,6 @@ import './LoginView.css'
 
 class LoginView extends React.Component {
   state = {
-      username: "",
-      password: "",
       loading: false,
       message: ""
     };
@@ -26,10 +24,9 @@ class LoginView extends React.Component {
       loading: true
     });
 
-
     AuthService.login(this.state.username, this.state.password)
     .then(() => {
-        this.props.history.push('/barrel_set');
+        this.props.history.push('/home');
       },
       error => {
         const resMessage =

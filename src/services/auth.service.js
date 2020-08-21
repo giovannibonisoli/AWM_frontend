@@ -1,12 +1,12 @@
 import { request } from '../helpers/requests';
 
-class AuthService{
+class AuthService {
 
   login = async (username, password) => {
     let res = await request("token/", 'POST', { username, password });
     if (res.access) {
-
-      localStorage.setItem("user", JSON.stringify(res));
+      localStorage.setItem("user", username);
+      localStorage.setItem("token", res);
     }
 
     return res;

@@ -84,33 +84,35 @@ class DataTable extends Component {
           </tbody>
         </Table>
 
-
+        { groupLength > 1 ? (
           <ButtonGroup>
             <Button variant="outline-primary" onClick={this.back}>&laquo;</Button>
-            { groupLength <= maxsize ? (
-                Array(groupLength).fill().map((_, i) => {
-                  return (<Button variant="outline-primary"
-                                  onClick={() => {this.changePage(i)}}
-                                  active={this.activeButton(i)}>
-                                  {i + 1}
-                          </Button>);
-                })
-              ) : (
-                Array(maxsize).fill().map((_, i) => {
-                  let index = i;
-                  if(page >= maxsize){
-                    index = page - maxsize + 1 + i;
-                  }
-                  return (<Button variant="outline-primary"
-                                  onClick={() => {this.changePage(index)}}
-                                  active={this.activeButton(index)}>
-                                  {index + 1}
-                          </Button>);
-                })
-              )
-            }
-            <Button variant="outline-primary" onClick={this.forward}>&raquo;</Button>
-          </ButtonGroup>
+              { groupLength <= maxsize ? (
+                  Array(groupLength).fill().map((_, i) => {
+                    return (<Button variant="outline-primary"
+                                    onClick={() => {this.changePage(i)}}
+                                    active={this.activeButton(i)}>
+                                    {i + 1}
+                            </Button>);
+                  })
+                ) : (
+                  Array(maxsize).fill().map((_, i) => {
+                    let index = i;
+                    if(page >= maxsize){
+                      index = page - maxsize + 1 + i;
+                    }
+                    return (<Button variant="outline-primary"
+                                    onClick={() => {this.changePage(index)}}
+                                    active={this.activeButton(index)}>
+                                    {index + 1}
+                            </Button>);
+                  })
+                )
+              }
+              <Button variant="outline-primary" onClick={this.forward}>&raquo;</Button>
+            </ButtonGroup>
+          ): (<div></div>)
+        }
       </div>
     )
   }

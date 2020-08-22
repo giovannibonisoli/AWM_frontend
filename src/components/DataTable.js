@@ -24,7 +24,7 @@ class DataTable extends Component {
 
   forward = () => {
     const page = this.state.page;
-    if (page !== (Math.floor(this.props.items.length/5)-1))
+    if (page !== (Math.ceil(this.props.items.length/5)-1))
       this.setState({page: page + 1});
   }
 

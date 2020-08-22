@@ -24,7 +24,7 @@ class DataTable extends Component {
 
   forward = () => {
     const page = this.state.page;
-    if (page !== Math.floor(this.props.items.length/5))
+    if (page !== (Math.floor(this.props.items.length/5)-1))
       this.setState({page: page + 1});
   }
 
@@ -34,6 +34,9 @@ class DataTable extends Component {
 
   render() {
     const page = this.state.page
+    const itemsLength = this.props.items.length;
+    const groupLength = Math.ceil((itemsLength/5))
+    const maxsize = 3;
     return (
       <div >
         <ModalForm title = {`Aggiungi "${this.props.objectName}"`}
@@ -81,23 +84,33 @@ class DataTable extends Component {
           </tbody>
         </Table>
 
-        {this.props.items.length > 5 ? (
+
           <ButtonGroup>
             <Button variant="outline-primary" onClick={this.back}>&laquo;</Button>
-            <Button variant="outline-primary"
-                    onClick={() => {this.changePage(0)}}
-                    active={this.activeButton(0)}>
-                    1
-            </Button>
-            <Button variant="outline-primary"
-                    onClick={() => {this.changePage(1)}}
-                    active={this.activeButton(1)}>
-                    2
-            </Button>
+            { groupLength <= maxsize ? (
+                Array(groupLength).fill().map((_, i) => {
+                  return (<Button variant="outline-primary"
+                                  onClick={() => {this.changePage(i)}}
+                                  active={this.activeButton(i)}>
+                                  {i + 1}
+                          </Button>);
+                })
+              ) : (
+                Array(maxsize).fill().map((_, i) => {
+                  let index = i;
+                  if(page >= maxsize){
+                    index = page - maxsize + 1 + i;
+                  }
+                  return (<Button variant="outline-primary"
+                                  onClick={() => {this.changePage(index)}}
+                                  active={this.activeButton(index)}>
+                                  {index + 1}
+                          </Button>);
+                })
+              )
+            }
             <Button variant="outline-primary" onClick={this.forward}>&raquo;</Button>
           </ButtonGroup>
-        ) : (<div></div>)
-      }
       </div>
     )
   }

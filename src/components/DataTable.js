@@ -1,14 +1,39 @@
 import React, { Component } from 'react'
 import Table  from 'react-bootstrap/Table';
 import Button  from 'react-bootstrap/Button';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import { Link } from 'react-router-dom';
 
 import ModalForm from './ModalForm';
 import EliminationModal from './EliminationModal';
 
 class DataTable extends Component {
+  state = {
+    page: 0
+  }
+
+  activeButton = (index) => {
+    return this.state.page === index;
+  }
+
+  back = () => {
+    const page = this.state.page;
+    if (page !== 0)
+      this.setState({page: page - 1});
+  }
+
+  forward = () => {
+    const page = this.state.page;
+    if (page !== Math.floor(this.props.items.length/5))
+      this.setState({page: page + 1});
+  }
+
+  changePage = (index) => {
+    this.setState({page: index});
+  }
 
   render() {
+    const page = this.state.page
     return (
       <div >
         <ModalForm title = {`Aggiungi "${this.props.objectName}"`}
@@ -25,7 +50,7 @@ class DataTable extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.props.items.map(item => {
+            {this.props.items.slice(page*5, (page+1)*5).map(item => {
               return (
                 <tr key={item.id}>
                   {this.props.fields.map(field => <td key={field.field}>{item[field.field]}</td>)}
@@ -55,6 +80,24 @@ class DataTable extends Component {
             })}
           </tbody>
         </Table>
+
+        {this.props.items.length > 5 ? (
+          <ButtonGroup>
+            <Button variant="outline-primary" onClick={this.back}>&laquo;</Button>
+            <Button variant="outline-primary"
+                    onClick={() => {this.changePage(0)}}
+                    active={this.activeButton(0)}>
+                    1
+            </Button>
+            <Button variant="outline-primary"
+                    onClick={() => {this.changePage(1)}}
+                    active={this.activeButton(1)}>
+                    2
+            </Button>
+            <Button variant="outline-primary" onClick={this.forward}>&raquo;</Button>
+          </ButtonGroup>
+        ) : (<div></div>)
+      }
       </div>
     )
   }

@@ -45,8 +45,9 @@ class OperationTypeView extends React.Component {
 
   render() {
     return (
-      <div>
+      <div style={{width: '97%', paddingLeft: '3%'}}>
         <h1 style={{margin: "20px 0"}}>Tipi di operazione</h1>
+        <hr />
         <DataTable objectName="Tipo di Operazione"
                     detailed={["/operation", "Vedi tutti"]}
                     fields={[

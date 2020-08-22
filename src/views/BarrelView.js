@@ -43,8 +43,9 @@ class BarrelView extends React.Component {
 
   render() {
     return (
-      <div>
+      <div style={{width: '97%', paddingLeft: '3%'}}>
         <h1 style={{margin: "20px 0"}}>{`Batteria ${this.props.match.params.setID}`}</h1>
+        <hr />
         <DataTable objectName="Barile"
                     fields={[
                               {

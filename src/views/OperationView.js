@@ -83,8 +83,9 @@ class OperationView extends React.Component {
 
   render() {
     return (
-      <div>
+      <div style={{width: '97%', paddingLeft: '3%'}}>
         <h1 style={{margin: "20px 0"}}>{this.objectName}</h1>
+        <hr />
         <DataTable objectName={this.objectName}
                     fields={this.state.schema}
                     items={this.state.items}

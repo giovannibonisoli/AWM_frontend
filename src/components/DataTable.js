@@ -10,8 +10,14 @@ class DataTable extends Component {
 
   render() {
     return (
-      <div>
-        <Table responsive bordered hover>
+      <div >
+        <ModalForm title = {`Aggiungi "${this.props.objectName}"`}
+                        buttonInfo = {[`+ Aggiungi`, "success", "float-xl-right"]}
+                        action = {this.props.addAction}
+                        fields = {this.props.fields}
+                        variable={this.props.variable} />
+
+        <Table style={{marginTop: 20}} responsive bordered hover>
           <thead>
             <tr>
               {this.props.fields.map(field => <th key={field.field}>{field.name}</th>)}
@@ -26,7 +32,7 @@ class DataTable extends Component {
                   <td>
                     <div>
                       <ModalForm title = {`Modifica ${this.props.objectName}`}
-                                  buttonInfo={["Modifica", "primary"]}
+                                  buttonInfo={["Modifica", "primary", ""]}
                                   item = {item}
                                   action = {this.props.updateAction}
                                   fields = {this.props.fields}
@@ -49,11 +55,6 @@ class DataTable extends Component {
             })}
           </tbody>
         </Table>
-        <ModalForm title = {`Aggiungi "${this.props.objectName}"`}
-                    buttonInfo = {[`Aggiungi "${this.props.objectName}"`, "success"]}
-                    action = {this.props.addAction}
-                    fields = {this.props.fields}
-                    variable={this.props.variable} />
       </div>
     )
   }

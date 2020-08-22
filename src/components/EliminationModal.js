@@ -24,7 +24,7 @@ class EliminationForm extends React.Component {
       <div>
         <Button variant="danger"
                 onClick={this.toggle}
-                style={{float: "left", marginRight:"10px"}}>Elimina
+                style={{float: "left", marginLeft: "10px",marginRight:"10px"}}>Elimina
         </Button>
         <Modal show={this.state.modal} onHide={this.toggle}>
           <Modal.Header>

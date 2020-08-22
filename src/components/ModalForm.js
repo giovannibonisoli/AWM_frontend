@@ -21,7 +21,8 @@ class ModalForm extends React.Component {
       <div>
         <Button variant={this.props.buttonInfo[1]}
                 onClick={this.toggle}
-                style={{float: "left", marginRight:"10px"}}>
+                style={{float: "left"}}
+                className={this.props.buttonInfo[2]}>
           {this.props.buttonInfo[0]}
         </Button>
         <Modal size="lg" show={this.state.modal} onHide={this.toggle}>

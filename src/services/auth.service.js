@@ -35,9 +35,7 @@ class AuthService {
 
     const startDate = Date.parse(this.getCurrentUser().date);
     const endDate = new Date();
-    console.log((endDate -startDate) / 1000);
     if ((endDate - startDate) / 1000 >=  290){
-      console.log('refresh');
       return fetch("http://localhost:8000/api/token/refresh/", {
     	   method: 'POST',
       	 headers: {

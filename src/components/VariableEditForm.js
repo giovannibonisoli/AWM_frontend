@@ -61,7 +61,6 @@ class VariableEditForm extends React.Component {
         description: this.props.item.description,
         schema: JSON.parse(this.props.item.schema)
       });
-      console.log(this.state);
     }
   }
 

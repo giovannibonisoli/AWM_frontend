@@ -28,10 +28,10 @@ class EditForm extends React.Component {
   render() {
     return (
       <Form onSubmit={this.submitForm}>
-          {this.props.fields.map(field => {
+          {this.props.fields.map((field, i) => {
             if (this.props.item !== undefined & !field.modifiable){
               return(
-                <Form.Group key={field.field}>
+                <Form.Group key={i}>
                   <Form.Label><h5>{field.name}</h5></Form.Label>
                   <br />
                   {this.state[field.field]}
@@ -41,7 +41,7 @@ class EditForm extends React.Component {
             else{
               if(field.type === "barrel"){
                 return(
-                  <Form.Group key={field.field}>
+                  <Form.Group key={i}>
                     <Form.Label><h5>{field.name}</h5></Form.Label>
                     <BarrelSelect name={field.field}
                                   value={this.state[field.field]}
@@ -51,7 +51,7 @@ class EditForm extends React.Component {
               }
               else{
                 return(
-                  <Form.Group key={field.field}>
+                  <Form.Group key={i}>
                     <Form.Label><h5>{field.name}</h5></Form.Label>
                     <Form.Control name={field.field}
                                   min={field.min}
@@ -67,7 +67,7 @@ class EditForm extends React.Component {
             }
           })}
         <hr />
-        <div class="float-xl-right">
+        <div className="float-xl-right">
           <Button variant="secondary" onClick={this.props.toggle}>Annulla</Button>
           {' '}
           <Button type="submit">Ok</Button>

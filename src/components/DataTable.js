@@ -33,7 +33,7 @@ class DataTable extends Component {
   }
 
   render() {
-    const page = this.state.page
+    const page = this.state.page;
     const itemsLength = this.props.items.length;
     const groupLength = Math.ceil((itemsLength/5))
     const maxsize = 3;
@@ -48,7 +48,7 @@ class DataTable extends Component {
         <Table style={{marginTop: 20}} responsive bordered hover>
           <thead>
             <tr>
-              {this.props.fields.map(field => <th key={field.field}>{field.name}</th>)}
+              {this.props.fields.map((field, i) => <th key={i}>{field.name}</th>)}
               <th width="25%"></th>
             </tr>
           </thead>
@@ -56,7 +56,7 @@ class DataTable extends Component {
             {this.props.items.slice(page*5, (page+1)*5).map(item => {
               return (
                 <tr key={item.id}>
-                  {this.props.fields.map(field => <td key={field.field}>{item[field.field]}</td>)}
+                  {this.props.fields.map((field, i) => <td key={i}>{item[field.field]}</td>)}
                   <td>
                     <div>
                       <ModalForm title = {`Modifica ${this.props.objectName}`}
@@ -89,7 +89,8 @@ class DataTable extends Component {
             <Button variant="outline-primary" onClick={this.back}>&laquo;</Button>
               { groupLength <= maxsize ? (
                   Array(groupLength).fill().map((_, i) => {
-                    return (<Button variant="outline-primary"
+                    return (<Button key={i}
+                                    variant="outline-primary"
                                     onClick={() => {this.changePage(i)}}
                                     active={this.activeButton(i)}>
                                     {i + 1}

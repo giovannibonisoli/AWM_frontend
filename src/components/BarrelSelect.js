@@ -38,6 +38,7 @@ class BarrelSelect extends React.Component {
     return (
       <Form.Row>
         <Col>
+          <Form.Label><h6>Numero Batteria</h6></Form.Label>
           <Form.Control as="select"
                         value = {this.state.selected_set}
                         defaultValue=""
@@ -55,6 +56,7 @@ class BarrelSelect extends React.Component {
           </Form.Control>
         </Col>
         <Col>
+          <Form.Label><h6>Codice Barile</h6></Form.Label>
           <Form.Control as="select"
                         name={this.props.name}
                         value={this.props.value}

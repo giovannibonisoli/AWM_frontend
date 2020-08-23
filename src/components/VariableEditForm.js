@@ -14,8 +14,13 @@ class VariableEditForm extends React.Component {
 
   handleShareholderNameChange = idx => e => {
     const newSchema= this.state.schema.map((field, sidx) => {
-      if (idx !== sidx) return field;
-      return { ...field, name: e.target.value, field: e.target.value.toLowerCase().replace(/\s+/g, '')};
+      if (idx !== sidx) {return field}
+      else {
+        if(this.props.item){
+          return { ...field, name: e.target.value};
+        }
+        return { ...field, name: e.target.value, field: e.target.value.toLowerCase().replace(/\s+/g, '')};
+      }
     });
 
     this.setState({ schema: newSchema });

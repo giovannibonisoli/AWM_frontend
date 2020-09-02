@@ -4,9 +4,7 @@ import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 
 class VariableEditForm extends React.Component {
-  state = {
-    schema: [{ field:"", name: "", type: ""}]
-  }
+  state = {}
 
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
@@ -37,12 +35,7 @@ class VariableEditForm extends React.Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    this.props.action({
-      id : this.state.id,
-      name: this.state.name,
-      description: this.state.description,
-      schema: this.state.schema
-    });
+    this.props.action(Object.assign({}, this.state));
     this.props.toggle();
   };
 
@@ -53,6 +46,7 @@ class VariableEditForm extends React.Component {
   };
 
   handleRemoveShareholder = idx => () => {
+
     this.setState({
       schema: this.state.schema.filter((s, sidx) => idx !== sidx)
     });
@@ -60,16 +54,17 @@ class VariableEditForm extends React.Component {
 
   componentDidMount(){
     if(this.props.item){
+      this.setState(Object.assign({}, this.props.item))
+    }
+    else{
       this.setState({
-        id : this.props.item.id,
-        name: this.props.item.name,
-        description: this.props.item.description,
-        schema: JSON.parse(this.props.item.schema)
+        schema: [{field:"", name: "", type: ""}]
       });
     }
   }
 
   render() {
+    const variable = (this.props.variable === true) && (this.state.schema !== undefined)
     return (
       <Form onSubmit={this.handleSubmit}>
         <Form.Group>
@@ -94,15 +89,14 @@ class VariableEditForm extends React.Component {
                         rows="3"
                         required/>
         </Form.Group>
-        {
-          this.state.schema.length !== 0 ? (
-            <div>
-              <Form.Label><h5>Nome e tipo di dato</h5></Form.Label>
-            </div>
-          ) : (
-            <div></div>
-          )
-        }
+
+        {variable && (
+          <div>
+        {this.state.schema.length !== 0 && (
+          <div>
+            <Form.Label><h5>Nome e tipo di dato</h5></Form.Label>
+          </div>
+        )}
         {this.state.schema.map((field, idx) => (
             <Form.Group key={idx}>
               <Form.Row>
@@ -143,6 +137,8 @@ class VariableEditForm extends React.Component {
           +
         </Button>
       </Form.Group>
+      </div>)}
+
       <hr />
       <div class="float-xl-right">
         <Button variant="secondary" onClick={this.props.toggle}>Annulla</Button>

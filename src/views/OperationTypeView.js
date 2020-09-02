@@ -8,10 +8,27 @@ class OperationTypeView extends React.Component {
     items: []
   }
 
+  fields = [
+            {
+              field: 'name',
+              name: 'Nome',
+              type: 'text',
+              modifiable: false
+            },
+            {
+              field: 'description',
+              name: 'Descrizione',
+              type: 'textArea',
+              modifiable: false
+            }
+          ]
+
   addItem = async (item) => {
     item.id = item.name.toLowerCase().replace(/\s/g, '');
     item.schema = JSON.stringify(item.schema);
+
     let newItem = await request("operation_type/", 'POST', item);
+    newItem.schema = JSON.parse(newItem.schema);
     this.setState(prevState => ({
       items: [...prevState.items, newItem]
     }));
@@ -20,7 +37,7 @@ class OperationTypeView extends React.Component {
   updateItem = async (item) => {
     item.schema = JSON.stringify(item.schema);
     let updatedItem = await request (`operation_type/${item.id}/`, 'PUT', item);
-
+    updatedItem.schema = JSON.parse(updatedItem.schema);
     const itemIndex = this.state.items.findIndex(data => data.id === updatedItem.id);
     const newArray = [
       // destructure all items from beginning to the indexed item
@@ -40,7 +57,12 @@ class OperationTypeView extends React.Component {
   }
 
   async componentDidMount(){
-    this.setState({items: await request("operation_type/", 'GET')});
+    let items = await await request("operation_type/", 'GET');
+    items = items.map(item => {
+      item.schema = JSON.parse(item.schema);
+      return item;
+    });
+    this.setState({items: items});
   }
 
   render() {
@@ -50,20 +72,7 @@ class OperationTypeView extends React.Component {
         <hr />
         <DataTable objectName="Tipo di Operazione"
                     detailed={["/operation", "Vedi tutti"]}
-                    fields={[
-                              {
-                                field: 'name',
-                                name: 'Nome',
-                                type: 'text',
-                                modifiable: false
-                              },
-                              {
-                                field: 'description',
-                                name: 'Descrizione',
-                                type: 'textArea',
-                                modifiable: false
-                              }
-                            ]}
+                    fields={this.fields}
                             items={this.state.items}
                             addAction={this.addItem}
                             updateAction={this.updateItem}

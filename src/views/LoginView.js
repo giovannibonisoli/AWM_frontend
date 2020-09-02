@@ -54,7 +54,7 @@ class LoginView extends React.Component {
       <div className="auth-wrapper">
         <div className="auth-inner">
           <Form onSubmit={this.handleLogin}>
-            <h3>Login</h3>
+            <h3>Acetaia</h3>
             <Form.Group>
               <Form.Label>Username</Form.Label>
               <Form.Control type="text"

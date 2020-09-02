@@ -35,7 +35,8 @@ class ModalForm extends React.Component {
             (<VariableEditForm action={this.props.action}
                                 toggle={this.toggle}
                                 item={this.props.item}
-                                fields={this.props.fields}/>)
+                                fields={this.props.fields}
+                                variable={this.props.variable}/>)
             :
             (<EditForm action={this.props.action}
                         toggle={this.toggle}

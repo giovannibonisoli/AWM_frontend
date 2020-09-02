@@ -3,6 +3,8 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 
+import BarrelSelect from './BarrelSelect';
+
 class VariableEditForm extends React.Component {
   state = {}
 
@@ -67,28 +69,44 @@ class VariableEditForm extends React.Component {
     const variable = (this.props.variable === true) && (this.state.schema !== undefined)
     return (
       <Form onSubmit={this.handleSubmit}>
-        <Form.Group>
-          <Form.Label><h5>Nome Operazione</h5></Form.Label>
-          {
-            !this.props.item ? (
-                <Form.Control name="name"
-                              type="text"
-                              placeholder="Operation name"
-                              value={this.state.name}
-                              onChange={this.onChange}
-                              required />
-              ) : (<div>{this.state.name}<br/></div>)
+      {this.props.fields.map((field, i) => {
+        if (this.props.item !== undefined & !field.modifiable){
+          return(
+            <Form.Group key={i}>
+              <Form.Label><h5>{field.name}</h5></Form.Label>
+              <br />
+              {this.state[field.field]}
+            </Form.Group>
+          )
+        }
+        else{
+          if(field.type === "barrel"){
+            return(
+              <Form.Group key={i}>
+                <Form.Label><h5>{field.name}</h5></Form.Label>
+                <BarrelSelect name={field.field}
+                              value={this.state[field.field]}
+                              onChange={this.onChange}/>
+              </Form.Group>
+            )
           }
-        </Form.Group>
-        <Form.Group>
-          <Form.Label><h5>Descrizione</h5></Form.Label>
-          <Form.Control name="description"
-                        value={this.state.description}
-                        onChange={this.onChange}
-                        as="textarea"
-                        rows="3"
-                        required/>
-        </Form.Group>
+          else{
+            return(
+              <Form.Group key={i}>
+                <Form.Label><h5>{field.name}</h5></Form.Label>
+                <Form.Control name={field.field}
+                              min={field.min}
+                              max={field.max}
+                              value={this.state[field.field]}
+                              type={field.type}
+                              onChange={this.onChange}
+                              placeholder={field.name}
+                              required/>
+              </Form.Group>
+            )
+          }
+        }
+      })}
 
         {variable && (
           <div>

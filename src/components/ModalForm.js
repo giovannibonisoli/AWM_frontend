@@ -3,7 +3,6 @@ import Modal from 'react-bootstrap/Modal';
 import Button  from 'react-bootstrap/Button';
 
 import EditForm from './EditForm';
-import VariableEditForm from './VariableEditForm';
 
 class ModalForm extends React.Component {
   state = {
@@ -30,24 +29,11 @@ class ModalForm extends React.Component {
             <Modal.Title>{this.props.title}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-          <VariableEditForm action={this.props.action}
+          <EditForm action={this.props.action}
                               toggle={this.toggle}
                               item={this.props.item}
                               fields={this.props.fields}
                               variable={this.props.variable}/>
-          {/*
-            this.props.variable ?
-            (<VariableEditForm action={this.props.action}
-                                toggle={this.toggle}
-                                item={this.props.item}
-                                fields={this.props.fields}
-                                variable={this.props.variable}/>)
-            :
-            (<EditForm action={this.props.action}
-                        toggle={this.toggle}
-                        item={this.props.item}
-                        fields={this.props.fields}/>)
-          */}
           </Modal.Body>
         </Modal>
       </div>

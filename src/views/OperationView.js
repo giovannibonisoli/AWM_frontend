@@ -17,19 +17,17 @@ class OperationView extends React.Component {
                     field: 'id',
                     name: `Codice Operazione`,
                     type: 'number',
-                    modifiable: false
+                    notModifiable: true
                   },
                   {
                     field: 'date',
                     name: 'Data',
                     type: 'date',
-                    modifiable: true
                   },
                   {
                     field: 'barrel',
                     name: 'Barile',
                     type: 'barrel',
-                    modifiable: true
                   }
                 ]
 

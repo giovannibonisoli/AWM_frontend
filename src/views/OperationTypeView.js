@@ -14,14 +14,12 @@ class OperationTypeView extends React.Component {
             {
               field: 'name',
               name: 'Nome',
-              type: 'text',
-              modifiable: false
+              type: 'text'
             },
             {
               field: 'description',
               name: 'Descrizione',
-              type: 'textArea',
-              modifiable: true
+              type: 'textArea'
             }
           ]
 

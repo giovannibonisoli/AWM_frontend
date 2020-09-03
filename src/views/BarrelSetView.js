@@ -15,14 +15,13 @@ class BarrelSetView extends React.Component {
               field: 'id',
               name: 'Numero Batteria',
               type: 'number',
-              modifiable: false
+              notModifiable: true
             },
             {
               field: 'year',
               name: 'Anno',
               type: 'number',
-              min: 1984,
-              modifiable: true
+              min: 1984
             }
           ]
 

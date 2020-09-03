@@ -70,7 +70,7 @@ class EditForm extends React.Component {
     return (
       <Form onSubmit={this.handleSubmit}>
       {this.props.fields.map((field, i) => {
-        if (this.props.item !== undefined & !field.modifiable){
+        if (this.props.item !== undefined & field.notModifiable){
           return(
             <Form.Group key={i}>
               <Form.Label><h5>{field.name}</h5></Form.Label>

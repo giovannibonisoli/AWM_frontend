@@ -1,19 +1,34 @@
-import { request } from '../helpers/requests';
-
 class AuthService {
 
   login = async (username, password) => {
-    let res = await request("token/", 'POST', { username, password });
-    if (res.access) {
-      localStorage.setItem("user", JSON.stringify({
-                                          name: username ,
-                                          token: res,
-                                          date: new Date()
-                                        })
-                          );
-    }
+    return fetch("http://localhost:8000/api/token/", {
+       method: 'POST',
+       headers: {
+                  'Content-Type': 'application/json',
+                  Accept: 'application/json',
+                },
+       body: JSON.stringify({username, password})
+    })
+    .then(res => res.json())
+    .then(data => {
+      if(data.access && data.refresh){
+        this.storeUser(username, data.access, data.refresh);
+        return "login successful";
+      }
+      return data.detail;
+    })
+    .catch(err => console.error(err));
+  }
 
-    return res;
+  storeUser = async (username, access, refresh) => {
+    localStorage.setItem('user', JSON.stringify({
+        name: username,
+        token: {
+                  access: access,
+                  refresh: refresh
+                },
+        date: new Date()
+      }));
   }
 
   logout = () => {
@@ -30,10 +45,10 @@ class AuthService {
     return JSON.parse(localStorage.getItem('user'));
   }
 
-  checkToken = () => {
-    const token = this.getCurrentUser().token;
+  checkToken = async () => {
+    const user = this.getCurrentUser();
 
-    const startDate = Date.parse(this.getCurrentUser().date);
+    const startDate = Date.parse(user.date);
     const endDate = new Date();
     if ((endDate - startDate) / 1000 >=  290){
       return fetch("http://localhost:8000/api/token/refresh/", {
@@ -42,7 +57,7 @@ class AuthService {
         		        'Content-Type': 'application/json',
       		          Accept: 'application/json',
       	          },
-    		 body: JSON.stringify({refresh: token.refresh})
+    		 body: JSON.stringify({refresh: user.token.refresh})
     	})
     	.then(res => {
         if (!res.ok) {
@@ -51,18 +66,16 @@ class AuthService {
     		return res.json();
     	})
       .then(res => {
-        localStorage.setItem("user", JSON.stringify({
-                                            name: this.getCurrentUser().name ,
-                                            token: {
-                                                access: res.access,
-                                                refresh: token.refresh
-                                              },
-                                            date: new Date()
-                                          })
-                            );
+        this.storeUser(user.name, res.access, user.token.refresh);
       });
 
     }
+  }
+
+  getToken = async () => {
+    await this.checkToken();
+    const user = this.getCurrentUser();
+    return user.token.access;
   }
 }
 

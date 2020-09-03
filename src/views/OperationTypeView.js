@@ -19,7 +19,7 @@ class OperationTypeView extends React.Component {
               field: 'description',
               name: 'Descrizione',
               type: 'textArea',
-              modifiable: false
+              modifiable: true
             }
           ]
 

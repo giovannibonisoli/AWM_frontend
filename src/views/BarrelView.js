@@ -14,13 +14,13 @@ class BarrelView extends React.Component {
             {
               field: 'id',
               name: 'Codice Barile',
-              type: '',
+              type: 'auto',
               notModifiable: true
             },
             {
               field: 'wood_type',
               name: 'Legno',
-              type: '',
+              type: 'text',
             },
             {
               field: 'capability',

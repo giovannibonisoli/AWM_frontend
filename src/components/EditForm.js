@@ -79,34 +79,45 @@ class EditForm extends React.Component {
             </Form.Group>
           )
         }
-        else{
-          if(field.type === "barrel"){
-            return(
-              <Form.Group key={i}>
-                <Form.Label><h5>{field.name}</h5></Form.Label>
-                <BarrelSelect name={field.field}
-                              value={this.state[field.field]}
-                              onChange={this.onChange}/>
-              </Form.Group>
-            )
-          }
-          else{
-            return(
-              <Form.Group key={i}>
-                <Form.Label><h5>{field.name}</h5></Form.Label>
-                <Form.Control name={field.field}
-                              min={field.min}
-                              max={field.max}
-                              value={this.state[field.field]}
-                              type={field.type}
-                              onChange={this.onChange}
-                              placeholder={field.name}
-                              required/>
-              </Form.Group>
-            )
-          }
+        if(this.props.item === undefined & field.type === "auto"){
+          return (null)
         }
-      })}
+        if(field.type === "barrel"){
+          return(
+            <Form.Group key={i}>
+              <Form.Label><h5>{field.name}</h5></Form.Label>
+              <BarrelSelect name={field.field}
+                            value={this.state[field.field]}
+                            onChange={this.onChange}/>
+            </Form.Group>
+          )
+        }
+        if(field.type === "textarea"){
+          return(
+            <Form.Group key={i}>
+              <Form.Label><h5>{field.name}</h5></Form.Label>
+              <Form.Control name={field.field}
+                            value={this.state[field.field]}
+                            as={field.type}
+                            onChange={this.onChange}
+                            required/>
+            </Form.Group>
+          )
+        }
+        return(
+          <Form.Group key={i}>
+            <Form.Label><h5>{field.name}</h5></Form.Label>
+            <Form.Control name={field.field}
+                          min={field.min}
+                          max={field.max}
+                          value={this.state[field.field]}
+                          type={field.type}
+                          onChange={this.onChange}
+                          placeholder={field.name}
+                          required/>
+          </Form.Group>
+          )
+        })}
 
         {variable && (
           <div>

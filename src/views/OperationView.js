@@ -16,7 +16,7 @@ class OperationView extends React.Component {
                   {
                     field: 'id',
                     name: `Codice Operazione`,
-                    type: 'number',
+                    type: 'auto',
                     notModifiable: true
                   },
                   {

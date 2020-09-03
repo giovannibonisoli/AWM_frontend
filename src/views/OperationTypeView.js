@@ -64,11 +64,7 @@ class OperationTypeView extends React.Component {
   async componentDidMount(){
     const token = await AuthService.getToken();
     if(token){
-      let items = await get("operation_type/", token);
-      items = items.map(item => {
-        return item;
-      });
-      this.setState({items: items});
+      this.setState({items: await get("operation_type/", token)});
     }
   }
 

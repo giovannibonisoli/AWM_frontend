@@ -49,7 +49,7 @@ class OperationView extends React.Component {
   updateItem = async (item) => {
     const token = await AuthService.getToken();
     if(token){
-      let serializedItem = serializeFields(item, this.state.schema);
+      let serializedItem = serializeFields(item, this.state.fields, this.fixedfields);
       serializedItem.type = this.props.match.params.name;
       let updatedItem = await put (`operation/${this.props.match.params.name}/${item.id}/`, serializedItem, token);
 

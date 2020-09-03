@@ -169,7 +169,7 @@ class EditForm extends React.Component {
       </div>)}
 
       <hr />
-      <div class="float-xl-right">
+      <div className="float-xl-right">
         <Button variant="secondary" onClick={this.props.toggle}>Annulla</Button>
         {' '}
         <Button type="submit">Ok</Button>

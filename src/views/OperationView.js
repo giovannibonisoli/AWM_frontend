@@ -8,38 +8,37 @@ import { get, post, put, del } from '../helpers/requests';
 
 class OperationView extends React.Component {
   state = {
-    schema: [
-              {
-                field: 'id',
-                name: `Codice Operazione`,
-                type: 'number',
-                fixed: true,
-                modifiable: false
-              },
-              {
-                field: 'date',
-                name: 'Data',
-                type: 'date',
-                fixed: true,
-                modifiable: true
-              },
-              {
-                field: 'barrel',
-                name: 'Barile',
-                type: 'barrel',
-                fixed: true,
-                modifiable: true
-              }
-            ],
+    fields: [],
     items: []
   }
+
+  fixedfields = [
+                  {
+                    field: 'id',
+                    name: `Codice Operazione`,
+                    type: 'number',
+                    modifiable: false
+                  },
+                  {
+                    field: 'date',
+                    name: 'Data',
+                    type: 'date',
+                    modifiable: true
+                  },
+                  {
+                    field: 'barrel',
+                    name: 'Barile',
+                    type: 'barrel',
+                    modifiable: true
+                  }
+                ]
 
   objectName = "";
 
   addItem = async (item) => {
     const token = await AuthService.getToken();
     if(token){
-      let serializedItem = serializeFields(item, this.state.schema);
+      let serializedItem = serializeFields(item, this.state.fields, this.fixedfields);
       serializedItem.type = this.props.match.params.name;
       let newItem = await post(`operation/${this.props.match.params.name}/`, serializedItem, token);
       this.setState(prevState => ({
@@ -83,11 +82,7 @@ class OperationView extends React.Component {
     if(token){
       let type = await get(`operation_type/${this.props.match.params.name}/`, token);
       this.objectName = type.name;
-      let schema = JSON.parse(type.schema);
-      schema.forEach((item, i) => {
-        item.modifiable = true;
-      })
-      this.setState({schema: [...this.state.schema, ...schema]});
+      this.setState({fields: [...this.fixedfields, ...type.schema]});
 
       let items = await get(`operation/${this.props.match.params.name}/`, token);
       items = items.map(item => deserializeFields(item, "values"));
@@ -101,7 +96,7 @@ class OperationView extends React.Component {
         <h1 style={{margin: "20px 0"}}>{this.objectName}</h1>
         <hr />
         <DataTable objectName={this.objectName}
-                    fields={this.state.schema}
+                    fields={this.state.fields}
                     items={this.state.items}
                     addAction={this.addItem}
                     updateAction={this.updateItem}

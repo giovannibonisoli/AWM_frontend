@@ -31,9 +31,7 @@ class BarrelSelect extends React.Component {
     if (this.state.selectedSet === null &&
         this.state.barrels.length !== 0 &&
         this.props.value !== undefined) {
-          console.log(this.props.value);
           const item = this.state.barrels.filter(barrel => barrel.id === this.props.value)[0]
-          console.log(item);
           this.setState({selectedSet: item.barrel_set});
     }
   }

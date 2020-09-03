@@ -25,7 +25,7 @@ class BarrelView extends React.Component {
             },
             {
               field: 'capability',
-              name: 'Capacità (litri)',
+              name: 'Capacità (millilitri)',
               type: 'number',
               modifiable: true
             }

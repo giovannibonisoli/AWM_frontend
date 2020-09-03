@@ -66,6 +66,7 @@ class BarrelSetView extends React.Component {
   async componentDidMount(){
     const token = await AuthService.getToken();
     if(token){
+      console.log(await get ("barrel_set/", token))
       this.setState({items: await get ("barrel_set/", token)});
     }
   }

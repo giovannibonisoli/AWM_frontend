@@ -1,22 +1,19 @@
-export const serializeFields = (item, fields) => {
-  let newItem = {}
-  let values = {};
-  fields.map(field => {
-    if(field.fixed){
+export const serializeFields = (item, fields, fixedfields) => {
+  let newItem = {};
+  newItem.values = {};
+
+  fields.forEach(field => {
+    if(fixedfields.includes(field))
       newItem[field.field] = item[field.field];
-    }
-    else{
-      values[field.field] = item[field.field];
-    }
-    return null;
+    else
+      newItem.values[field.field] = item[field.field];
   });
-  newItem.values = JSON.stringify(values);
   return newItem;
 };
 
 
 export const deserializeFields = (item, field) => {
-  let newObject = {...item, ...JSON.parse(item[field])};
+  let newObject = {...item, ...item[field]};
   delete newObject[field];
   return newObject;
 };

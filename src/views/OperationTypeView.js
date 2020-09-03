@@ -29,10 +29,8 @@ class OperationTypeView extends React.Component {
     const token = await AuthService.getToken();
     if(token){
       item.id = item.name.toLowerCase().replace(/\s/g, '');
-      item.schema = JSON.stringify(item.schema);
 
       let newItem = await post("operation_type/", item, token);
-      newItem.schema = JSON.parse(newItem.schema);
       this.setState(prevState => ({
         items: [...prevState.items, newItem]
       }));
@@ -42,9 +40,7 @@ class OperationTypeView extends React.Component {
   updateItem = async (item) => {
     const token = await AuthService.getToken();
     if(token){
-      item.schema = JSON.stringify(item.schema);
       let updatedItem = await put (`operation_type/${item.id}/`, item, token);
-      updatedItem.schema = JSON.parse(updatedItem.schema);
       const itemIndex = this.state.items.findIndex(data => data.id === updatedItem.id);
       const newArray = [
         // destructure all items from beginning to the indexed item
@@ -72,7 +68,6 @@ class OperationTypeView extends React.Component {
     if(token){
       let items = await get("operation_type/", token);
       items = items.map(item => {
-        item.schema = JSON.parse(item.schema);
         return item;
       });
       this.setState({items: items});

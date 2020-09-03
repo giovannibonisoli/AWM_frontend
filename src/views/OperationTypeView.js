@@ -1,7 +1,9 @@
 import React from 'react';
 
 import DataTable from '../components/DataTable';
-import { request } from '../helpers/requests';
+
+import AuthService from '../services/auth.service';
+import { get, post, put, del } from '../helpers/requests';
 
 class OperationTypeView extends React.Component {
   state = {
@@ -24,45 +26,57 @@ class OperationTypeView extends React.Component {
           ]
 
   addItem = async (item) => {
-    item.id = item.name.toLowerCase().replace(/\s/g, '');
-    item.schema = JSON.stringify(item.schema);
+    const token = await AuthService.getToken();
+    if(token){
+      item.id = item.name.toLowerCase().replace(/\s/g, '');
+      item.schema = JSON.stringify(item.schema);
 
-    let newItem = await request("operation_type/", 'POST', item);
-    newItem.schema = JSON.parse(newItem.schema);
-    this.setState(prevState => ({
-      items: [...prevState.items, newItem]
-    }));
+      let newItem = await post("operation_type/", item, token);
+      newItem.schema = JSON.parse(newItem.schema);
+      this.setState(prevState => ({
+        items: [...prevState.items, newItem]
+      }));
+    }
   }
 
   updateItem = async (item) => {
-    item.schema = JSON.stringify(item.schema);
-    let updatedItem = await request (`operation_type/${item.id}/`, 'PUT', item);
-    updatedItem.schema = JSON.parse(updatedItem.schema);
-    const itemIndex = this.state.items.findIndex(data => data.id === updatedItem.id);
-    const newArray = [
-      // destructure all items from beginning to the indexed item
-      ...this.state.items.slice(0, itemIndex),
-      // add the updated item to the array
-      updatedItem,
-      // add the rest of the items to the array from the index after the replaced item
-      ...this.state.items.slice(itemIndex + 1)
-    ]
-    this.setState({ items: newArray });
+    const token = await AuthService.getToken();
+    if(token){
+      item.schema = JSON.stringify(item.schema);
+      let updatedItem = await put (`operation_type/${item.id}/`, item, token);
+      updatedItem.schema = JSON.parse(updatedItem.schema);
+      const itemIndex = this.state.items.findIndex(data => data.id === updatedItem.id);
+      const newArray = [
+        // destructure all items from beginning to the indexed item
+        ...this.state.items.slice(0, itemIndex),
+        // add the updated item to the array
+        updatedItem,
+        // add the rest of the items to the array from the index after the replaced item
+        ...this.state.items.slice(itemIndex + 1)
+      ]
+      this.setState({ items: newArray });
+    }
   }
 
   deleteItem = async (id) => {
-    await request (`operation_type/${id}/`, 'DELETE');
-    const updatedItems = this.state.items.filter(item => item.id !== id);
-    this.setState({ items: updatedItems });
+    const token = await AuthService.getToken();
+    if(token){
+      await del (`operation_type/${id}/`, token);
+      const updatedItems = this.state.items.filter(item => item.id !== id);
+      this.setState({ items: updatedItems });
+    }
   }
 
   async componentDidMount(){
-    let items = await await request("operation_type/", 'GET');
-    items = items.map(item => {
-      item.schema = JSON.parse(item.schema);
-      return item;
-    });
-    this.setState({items: items});
+    const token = await AuthService.getToken();
+    if(token){
+      let items = await get("operation_type/", token);
+      items = items.map(item => {
+        item.schema = JSON.parse(item.schema);
+        return item;
+      });
+      this.setState({items: items});
+    }
   }
 
   render() {

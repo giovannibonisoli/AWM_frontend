@@ -2,7 +2,8 @@ import React from 'react';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 
-import { request } from '../helpers/requests';
+import AuthService from '../services/auth.service';
+import { get } from '../helpers/requests';
 
 class BarrelSelect extends React.Component {
   state = {
@@ -16,10 +17,13 @@ class BarrelSelect extends React.Component {
   }
 
   async componentDidMount (){
-    this.setState({
-      sets: await request("barrel_set/", 'GET'),
-      barrels: await request("barrel/", 'GET')
-    });
+    const token = await AuthService.getToken();
+    if(token){
+      this.setState({
+        sets: await get("barrel_set/", token),
+        barrels: await get("barrel/", token)
+      });
+    }
   }
 
   componentDidUpdate(prevProps) {

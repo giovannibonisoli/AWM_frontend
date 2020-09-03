@@ -1,27 +1,75 @@
-import AuthService from '../services/auth.service';
-
 const BASE_URL = "http://localhost:8000/api"
 
-export const request = async (url: string, method:string, body: Object) => {
+export const get = async (url: string, token: string) => {
 	let headers = {
 		'Content-Type': 'application/json',
 		Accept: 'application/json'
 	}
 
-	if (AuthService.isLoggedIn()){
-		AuthService.checkToken();
-		headers.Authorization = `Bearer ${AuthService.getCurrentUser().token.access}`;
-	}
+	if (token)
+		headers.Authorization = `Bearer ${token}`;
 
 	return fetch(`${BASE_URL}/${url}`, {
-		method: method,
+		method: 'GET',
+		headers: headers
+	})
+	.then(res => res.json())
+	.catch(err => console.error(err))
+};
+
+export const post = async (url: string, body: Object, token: string) => {
+	let headers = {
+		'Content-Type': 'application/json',
+		Accept: 'application/json'
+	}
+
+	if (token)
+		headers.Authorization = `Bearer ${token}`;
+
+	return fetch(`${BASE_URL}/${url}`, {
+		method: 'POST',
 		headers: headers,
 		body: JSON.stringify(body)
 	})
-	.then(async res => {
-    if (!res.ok) {
-				throw new Error(`Error with status ${res.status}`);
-			}
-		return res.statusText === 'No Content' ? null : res.json();
-	});
+	.then(res => res.json())
+	.catch(err => console.error(err));
 };
+
+export const put = async (url: string, body: Object, token: string) => {
+	let headers = {
+		'Content-Type': 'application/json',
+		Accept: 'application/json'
+	}
+
+	if (token)
+		headers.Authorization = `Bearer ${token}`;
+
+	return fetch(`${BASE_URL}/${url}`, {
+		method: 'PUT',
+		headers: headers,
+		body: JSON.stringify(body)
+	})
+	.then(res => res.json())
+	.catch(err => console.error(err));
+}
+
+export const del = async (url: string, token: string) => {
+	let headers = {
+		'Content-Type': 'application/json',
+		Accept: 'application/json'
+	}
+
+	if (token)
+		headers.Authorization = `Bearer ${token}`;
+
+	return fetch(`${BASE_URL}/${url}`, {
+		method: 'DELETE',
+		headers: headers
+	})
+	.then(res => {
+		if (res.status === 204)
+			return null;
+		return res.json();
+	})
+	.catch(err => console.error(err));
+}

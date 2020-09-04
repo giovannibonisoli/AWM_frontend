@@ -1,38 +1,33 @@
+import { post } from '../helpers/requests';
+
 class AuthService {
 
   login = async (username, password) => {
-    return fetch("http://localhost:8000/api/token/", {
-       method: 'POST',
-       headers: {
-                  'Content-Type': 'application/json',
-                  Accept: 'application/json',
-                },
-       body: JSON.stringify({username, password})
-    })
-    .then(res => res.json())
-    .then(data => {
-      if(data.access && data.refresh){
-        this.storeUser(username, data.access, data.refresh);
-        return "login successful";
-      }
-      return data.detail;
-    })
-    .catch(err => console.error(err));
-  }
+    let userInfo = await post("token/", {
+      username: username,
+      password: password
+    });
 
-  storeUser = async (username, access, refresh) => {
     localStorage.setItem('user', JSON.stringify({
-        name: username,
-        token: {
-                  access: access,
-                  refresh: refresh
-                },
+        username: username,
+        name: `${userInfo.first_name} ${userInfo.last_name}`,
+        email: userInfo.email
+      }));
+
+    localStorage.setItem('token', JSON.stringify({
+        access: userInfo.access,
+        refresh: userInfo.refresh,
         date: new Date()
       }));
   }
 
+  getCurrentUser = () => {
+    return JSON.parse(localStorage.getItem('user'));
+  }
+
   logout = () => {
     localStorage.removeItem("user");
+    localStorage.removeItem("token");
   }
 
   isLoggedIn = () => {
@@ -41,41 +36,23 @@ class AuthService {
     return false;
   }
 
-  getCurrentUser = () => {
-    return JSON.parse(localStorage.getItem('user'));
-  }
-
   checkToken = async () => {
-    const user = this.getCurrentUser();
+    const token = JSON.parse(localStorage.getItem('token'));
 
-    const startDate = Date.parse(user.date);
+    const startDate = Date.parse(token.date);
     const endDate = new Date();
     if ((endDate - startDate) / 1000 >=  290){
-      return fetch("http://localhost:8000/api/token/refresh/", {
-    	   method: 'POST',
-      	 headers: {
-        		        'Content-Type': 'application/json',
-      		          Accept: 'application/json',
-      	          },
-    		 body: JSON.stringify({refresh: user.token.refresh})
-    	})
-    	.then(res => {
-        if (!res.ok) {
-    		    throw new Error(`Error with status ${res.status}`);
-    		}
-    		return res.json();
-    	})
-      .then(res => {
-        this.storeUser(user.name, res.access, user.token.refresh);
-      });
-
+      console.log('change')
+      let newToken = await post("token/refresh/", {refresh: token.refresh});
+      token.access = newToken.access;
+      localStorage.setItem('token', JSON.stringify(token));
     }
   }
 
   getToken = async () => {
     await this.checkToken();
-    const user = this.getCurrentUser();
-    return user.token.access;
+    const token = JSON.parse(localStorage.getItem('token'));
+    return token.access;
   }
 }
 

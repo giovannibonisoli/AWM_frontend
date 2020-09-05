@@ -29,7 +29,7 @@ class BarrelView extends React.Component {
             }
           ]
 
-  addItem = async (item) => {
+  addItem = (item) => {
     AuthService.getToken().then(token => {
       if(token){
         item.barrel_set = this.props.match.params.setID;
@@ -73,7 +73,7 @@ class BarrelView extends React.Component {
       if(token){
         get(`barrel/set/${this.props.match.params.setID}/`, token)
         .then(items => {
-            this.setState({items: items});
+          this.setState({items: items});
         })
       }
     })

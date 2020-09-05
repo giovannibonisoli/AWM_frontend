@@ -27,7 +27,6 @@ class BarrelSelect extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-
     if (this.state.selectedSet === null &&
         this.state.barrels.length !== 0 &&
         this.props.value !== undefined) {

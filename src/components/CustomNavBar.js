@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Image from 'react-bootstrap/Image';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import { PersonCircle, PencilSquare, Server } from 'react-bootstrap-icons';

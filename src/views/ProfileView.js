@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { Link } from 'react-router-dom';
+import { ArrowRightShort } from 'react-bootstrap-icons';
 
 import AuthService from '../services/auth.service';
 
@@ -21,7 +22,8 @@ class ProfileView extends React.Component {
           </Col>
           <Col>
             <div class="float-xl-right">
-              <Button variant="dark" as={Link} to="/logout">
+              <Button variant="light" as={Link} to="/logout">
+                <ArrowRightShort size={24} />
                 Esci
               </Button>
             </div>

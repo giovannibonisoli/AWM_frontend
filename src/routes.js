@@ -17,7 +17,7 @@ const PrivateRoute = ({component: Component, ...rest}) => {
     <Route {...rest} render={props => (
       AuthService.isLoggedIn() ? (
         <div>
-          {props.location.pathname !== '/logout' && <CustomNavBar />}
+          {props.location.pathname !== '/logout' && <CustomNavBar user={AuthService.getCurrentUser()} />}
           <Component {...props} />
         </div>
       )

@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Redirect, Switch } from 'react-router-dom';
 
 import CustomNavBar from './components/CustomNavBar';
-import ProfileView from './views/HomeView';
+import ProfileView from './views/ProfileView';
 import LoginView from './views/LoginView';
 import LogoutView from './views/LogoutView';
 import BarrelSetView from './views/BarrelSetView';

@@ -42,7 +42,6 @@ class AuthService {
     const startDate = Date.parse(token.date);
     const endDate = new Date();
     if ((endDate - startDate) / 1000 >=  290){
-      console.log('change')
       let newToken = await post("token/refresh/", {refresh: token.refresh});
       token.access = newToken.access;
       localStorage.setItem('token', JSON.stringify(token));

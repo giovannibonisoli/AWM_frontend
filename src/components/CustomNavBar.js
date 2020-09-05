@@ -13,10 +13,9 @@ class CustomNavBar extends React.Component {
           <Nav className="mr-auto">
             <Nav.Link as={Link} to="/barrel_set">Batterie e Barili</Nav.Link>
             <Nav.Link as={Link} to="/operation_type">Operazioni</Nav.Link>
-            {/*<Nav.Link as={Link} to="/">Tutte le Operazioni</Nav.Link>*/}
           </Nav>
           <Nav>
-            <Nav.Link as={Link} to="/logout">Logout</Nav.Link>
+            <Nav.Link as={Link} to="/logout">Esci</Nav.Link>
           </Nav>
         </Navbar>
     );

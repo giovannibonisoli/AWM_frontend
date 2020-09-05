@@ -2,7 +2,7 @@ import React from 'react';
 
 import AuthService from '../services/auth.service';
 
-class HomeView extends React.Component {
+class ProfileView extends React.Component {
   state = {}
 
   render (){
@@ -14,4 +14,4 @@ class HomeView extends React.Component {
   }
 }
 
-export default HomeView;
+export default ProfileView;

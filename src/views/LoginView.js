@@ -73,7 +73,7 @@ class LoginView extends React.Component {
                             required/>
             </Form.Group>
             <Button variant="primary" className="btn-block" type="submit">
-              Invia
+              Entra
             </Button>
           </Form>
         </div>

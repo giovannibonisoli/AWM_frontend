@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Redirect, Switch } from 'react-router-dom';
 
 import CustomNavBar from './components/CustomNavBar';
-import HomeView from './views/HomeView';
+import ProfileView from './views/HomeView';
 import LoginView from './views/LoginView';
 import LogoutView from './views/LogoutView';
 import BarrelSetView from './views/BarrelSetView';
@@ -41,7 +41,7 @@ export const BaseRouter = (props) => {
     <div>
       <Switch>
         <PublicRoute path='/login' component={LoginView} />
-        <PrivateRoute path='/home' component={HomeView} />
+        <PrivateRoute path='/home' component={ProfileView} />
         <PrivateRoute path='/barrel_set' component={BarrelSetView} />
         <PrivateRoute path='/barrel/:setID' component={BarrelView} />
         <PrivateRoute path='/operation_type' component={OperationTypeView} />

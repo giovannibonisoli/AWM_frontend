@@ -30,7 +30,7 @@ const PublicRoute = ({component: Component, ...rest}) => {
   return (
     <Route {...rest} render={props => (
       AuthService.isLoggedIn() ?
-        <Redirect to="/home" />
+        <Redirect to="/profile" />
           : <Component {...props} />
     )} />
   );
@@ -41,7 +41,7 @@ export const BaseRouter = (props) => {
     <div>
       <Switch>
         <PublicRoute path='/login' component={LoginView} />
-        <PrivateRoute path='/home' component={ProfileView} />
+        <PrivateRoute path='/profile' component={ProfileView} />
         <PrivateRoute path='/barrel_set' component={BarrelSetView} />
         <PrivateRoute path='/barrel/:setID' component={BarrelView} />
         <PrivateRoute path='/operation_type' component={OperationTypeView} />

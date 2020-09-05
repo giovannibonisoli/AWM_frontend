@@ -1,6 +1,7 @@
 import React from 'react';
 import Form from 'react-bootstrap/Form';
 import Button  from 'react-bootstrap/Button';
+import Alert from 'react-bootstrap/Alert';
 
 import AuthService from '../services/auth.service';
 
@@ -17,35 +18,18 @@ class LoginView extends React.Component {
     this.setState({[e.target.name]: e.target.value});
   }
 
-  handleLogin = e => {
+  handleLogin = async e => {
     e.preventDefault();
-    this.setState({
-      message: "",
-      loading: true
-    });
 
-    AuthService.login(this.state.username, this.state.password)
-    .then(() => {
-        this.setState({
-          loading: false,
-          message: ''
-        });
-        this.props.history.push('/home');
-      },
-      error => {
-        const resMessage =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-            error.message ||
-            error.toString();
+    const login = await AuthService.login(this.state.username, this.state.password);
+    if(login === "login successful"){
 
-        this.setState({
-          loading: false,
-          message: resMessage
-        });
-      }
-    );
+      this.props.history.push('/profile');
+    }
+    else{
+      this.setState({message: "Attenzione! Credenziali errate"});
+    }
+
   }
 
 
@@ -72,6 +56,12 @@ class LoginView extends React.Component {
                             onChange={this.onChange}
                             required/>
             </Form.Group>
+
+            {this.state.resMessage && (
+              <Alert variant="danger">
+                {this.state.message}
+              </Alert>)
+            }
             <Button variant="primary" className="btn-block" type="submit">
               Entra
             </Button>

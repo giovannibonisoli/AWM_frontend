@@ -3,22 +3,29 @@ import { post } from '../helpers/requests';
 class AuthService {
 
   login = async (username, password) => {
-    let userInfo = await post("token/", {
+    return post("token/", {
       username: username,
       password: password
+    }).then(userInfo => {
+
+      if (userInfo.detail === "No active account found with the given credentials"){
+        return false;
+      }
+
+      localStorage.setItem('user', JSON.stringify({
+          username: username,
+          first_name: userInfo.first_name,
+          last_name: userInfo.last_name,
+          email: userInfo.email
+        }));
+
+      localStorage.setItem('token', JSON.stringify({
+          access: userInfo.access,
+          refresh: userInfo.refresh,
+          date: new Date()
+        }));
+        return "login successful";
     });
-
-    localStorage.setItem('user', JSON.stringify({
-        username: username,
-        name: `${userInfo.first_name} ${userInfo.last_name}`,
-        email: userInfo.email
-      }));
-
-    localStorage.setItem('token', JSON.stringify({
-        access: userInfo.access,
-        refresh: userInfo.refresh,
-        date: new Date()
-      }));
   }
 
   getCurrentUser = () => {
@@ -42,9 +49,11 @@ class AuthService {
     const startDate = Date.parse(token.date);
     const endDate = new Date();
     if ((endDate - startDate) / 1000 >=  290){
-      let newToken = await post("token/refresh/", {refresh: token.refresh});
-      token.access = newToken.access;
-      localStorage.setItem('token', JSON.stringify(token));
+      return post("token/refresh/", {refresh: token.refresh})
+      .then(newToken => {
+        token.access = newToken.access;
+        localStorage.setItem('token', JSON.stringify(token));
+      })
     }
   }
 

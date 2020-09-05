@@ -25,48 +25,54 @@ class BarrelSetView extends React.Component {
             }
           ]
 
-  addItem = async (item) => {
-    const token = await AuthService.getToken();
-    if(token){
-      let newItem = await post ("barrel_set/", item, token);
-      this.setState(prevState => ({
-        items: [...prevState.items, newItem]
-      }));
-    }
+  addItem = (item) => {
+    AuthService.getToken().then(token => {
+      if(token){
+        post ("barrel_set/", item, token).then(newItem => {
+          this.setState(prevState => ({
+            items: [...prevState.items, newItem]
+          }));
+        })
+      }
+    })
   }
 
-  updateItem = async (item) => {
-    const token = await AuthService.getToken();
-    if(token){
-      let updatedItem = await put (`barrel_set/${item.id}/`, item, token);
-
-      const itemIndex = this.state.items.findIndex(data => data.id === updatedItem.id);
-      const newArray = [
-        // destructure all items from beginning to the indexed item
-        ...this.state.items.slice(0, itemIndex),
-        // add the updated item to the array
-        updatedItem,
-        // add the rest of the items to the array from the index after the replaced item
-        ...this.state.items.slice(itemIndex + 1)
-      ]
-      this.setState({ items: newArray });
-    }
+  updateItem = (item) => {
+    AuthService.getToken().then(token => {
+      if(token){
+        put(`barrel_set/${item.id}/`, item, token).then(updatedItem => {
+          const itemIndex = this.state.items.findIndex(data => data.id === updatedItem.id);
+          const newArray = [
+            ...this.state.items.slice(0, itemIndex),
+            updatedItem,
+            ...this.state.items.slice(itemIndex + 1)
+          ]
+          this.setState({ items: newArray });
+        });
+      }
+    })
   }
 
-  deleteItem = async (id) => {
-    const token = await AuthService.getToken();
-    if(token){
-      await del (`barrel_set/${id}/`, token);
-      const updatedItems = this.state.items.filter(item => item.id !== id);
-      this.setState({ items: updatedItems });
-    }
+  deleteItem =  (id) => {
+    AuthService.getToken().then(token => {
+      if(token){
+        del(`barrel_set/${id}/`, token);
+        const updatedItems = this.state.items.filter(item => item.id !== id);
+        this.setState({ items: updatedItems });
+      }
+    })
   }
 
-  async componentDidMount(){
-    const token = await AuthService.getToken();
-    if(token){
-      this.setState({items: await get ("barrel_set/", token)});
-    }
+  componentDidMount(){
+    AuthService.getToken().then(token => {
+      if(token){
+        get ("barrel_set/", token)
+        .then(items => {
+          this.setState({items: items});
+        })
+      }
+    })
+
   }
 
   render() {

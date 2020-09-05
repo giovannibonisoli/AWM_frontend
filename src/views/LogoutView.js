@@ -26,10 +26,9 @@ class LogoutView extends React.Component {
       <div className="auth-wrapper">
         <div className="auth-inner">
           <h3>Sicuro di voler uscire?</h3>
-          <div>
+          <div className="d-flex justify-content-center">
             <Button variant="secondary" onClick={this.goBack}>Annulla</Button>
-            {' '}
-            <Button onClick={this.handlelogout}>Ok</Button>
+            <Button style={{marginRight: 10}} onClick={this.handlelogout}>Ok</Button>
           </div>
         </div>
       </div>

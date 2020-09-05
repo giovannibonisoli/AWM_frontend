@@ -9,8 +9,7 @@ import './LoginView.css'
 
 class LoginView extends React.Component {
   state = {
-      loading: false,
-      message: ""
+      error: false
     };
 
 
@@ -27,7 +26,7 @@ class LoginView extends React.Component {
       this.props.history.push('/profile');
     }
     else{
-      this.setState({message: "Attenzione! Credenziali errate"});
+      this.setState({error: true});
     }
 
   }
@@ -57,9 +56,9 @@ class LoginView extends React.Component {
                             required/>
             </Form.Group>
 
-            {this.state.resMessage && (
+            {this.state.error && (
               <Alert variant="danger">
-                {this.state.message}
+                Errore! Credenziali errate
               </Alert>)
             }
             <Button variant="primary" className="btn-block" type="submit">

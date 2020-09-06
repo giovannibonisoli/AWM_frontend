@@ -35,12 +35,18 @@ class ProfileView extends React.Component {
             <Image src={`${process.env.PUBLIC_URL}/user.png`} roundedCircle />
           </Col>
           <Col>
-            <h6>Nome</h6>
-            <p>{this.state.user.first_name}</p>
-            <h6>Cognome</h6>
-            <p>{this.state.user.last_name}</p>
-            <h6>Email</h6>
-            <p>{this.state.user.email}</p>
+            <div style={{marginBottom: 40}}>
+              <h5>Nome</h5>
+              <p>{this.state.user.first_name}</p>
+            </div>
+            <div style={{marginBottom: 40}}>
+              <h6>Cognome</h6>
+              <p>{this.state.user.last_name}</p>
+            </div>
+            <div style={{marginBottom: 40}}>
+              <h6>Email</h6>
+              <p>{this.state.user.email}</p>
+            </div>
           </Col>
         </Row>
       </div>
